@@ -43,10 +43,7 @@
         <div class="footer-right">
             <span>Đề tài:</span> Xây dựng ứng dụng web đọc truyện online <br>
             <span>Môn:</span> Phát triển phần mềm chuyên nghiệp <br>
-            Thành viên: <br>
-             - Võ Văn Việt <br>
-             - Nguyễn Công Toàn <br>
-             - Phạm Ngọc Văn
-             <span id="footer-right-term"><i class="fab fa-steam-symbol"></i> <a href="term.html">Terms of Service</a></span> 
+           
+        <span id="footer-right-term"><i class="fab fa-steam-symbol"></i> <a href="{{url('term')}}">Terms of Service</a></span> 
         </div>
     </div>

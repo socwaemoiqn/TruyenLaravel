@@ -16,7 +16,7 @@ class TbTaiKhoanEditColumn extends Migration
         Schema::table('tb_tai_khoan', function (Blueprint $table) {
             $table->string('ten_tai_khoan')->nullable()->change();
             $table->string('mat_khau')->nullable()->change();
-            $table->integer('ma_vai_tro')->nullable()->change();
+            $table->integer('tai_khoan_vai_tro')->nullable()->change();
         });
     }
 

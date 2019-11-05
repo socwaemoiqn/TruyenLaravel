@@ -169,7 +169,7 @@
 .txtb input:hover + span::after{
     width: 100%;
 }
-#container-login input[type=button],#container-logup input[type=button]{
+#container-login input[type=submit],#container-logup input[type=submit]{
     width: 100%;
     height: 50px;
     outline: none;
@@ -183,10 +183,10 @@
     transition: .5s;
     font-size: 17px;
 }
-#container-login input[type=button]:hover{
+#container-login input[type=submit]:hover{
     background-position: right;
 }
-#container-logup input[type=button]:hover{
+#container-logup input[type=submit]:hover{
     background-position: right;
 }
 .bottom-text{

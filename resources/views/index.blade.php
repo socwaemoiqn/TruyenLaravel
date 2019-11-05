@@ -48,7 +48,7 @@
                             <div class="content">
                                 <table>
                                     <tr>
-                                        <td><a href="info-truyen.html"><i class="fas fa-book-reader"></i> Tối cường thần thoại đế hoàng <br> (Chương 1998)</a></td>
+                                    <td><a href="{{url('info')}}"><i class="fas fa-book-reader"></i> Tối cường thần thoại đế hoàng <br> (Chương 1998)</a></td>
                                     </tr>
                                     <tr>
                                             <td><a href="#"><i class="fas fa-book-reader"></i> Đế tôn <br> (Chương 203)</a></a></td>
@@ -207,4 +207,7 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script src="assets/js/index.js"></script>
 @endsection

@@ -1,5 +1,5 @@
 <div class="topnav" id="myTopnav">
-        <a href="index.html" id="home">
+<a href="{{url('/')}}" id="home">
                 <span class="fa-stack">
                     <i class="fa fa-circle fa-stack-2x"></i>
                     <i class="fa fa-book-open fa-spin fa-stack-1x fa-inverse" style="color: black;"></i>
@@ -10,7 +10,7 @@
                 <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content" id="dropdown-content">
-                    <a href="danhmuc.html?id=full"><strong class="danhMucFull">Truyện full
+            <a href="{{url('danhmuc')}}"><strong class="danhMucFull">Truyện full
                             <span data-placeholder="Truyện full"></strong></span>
                     </b></a>
                     <a href="danhmuc.html?id=hot"><strong  class="danhMucHot">Truyện hot
@@ -32,7 +32,7 @@
                 <table width="100%" >
                     <tr>
                         <td  >
-                            <a href="theloai.html?id=tien-hiep"><strong>Tiên hiệp
+                            <a href="{{url('theloai')}}"><strong>Tiên hiệp
                                     <span data-placeholder="Tiên hiệp" ></span></strong></a>
                         </td>
                         <td>
@@ -219,8 +219,10 @@
             </div>
         </div>
         <a id="search" style=" position: absolute;right: 25%;top:0;width: 300px;padding: 10px;">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
+                <form action="{{url('search')}}" method="get">
+                        <input type="text" placeholder="Search.." name="search">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
         </a>
         <!-- Nút đăng nhập-->
         <div class="dropdown"  id="user">
