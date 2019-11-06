@@ -28,7 +28,10 @@ class DanhMucDAO implements DanhMucInterface{
         $danh_muc->save();
         return $danh_muc;
     }   
-    
+    public static function xoa(Request $request){
+        $danh_muc = DanhMuc::where('id',$request->id)->first();
+        return $danh_muc->delete();
+    }   
     public static function getData(){
         return DanhMuc::get();
     }

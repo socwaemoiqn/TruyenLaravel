@@ -16,12 +16,22 @@
 			<li><a href="#"><i class="fa fa-table fa-fw"></i>Quản Lý<span
 					class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-				<li><a href="{{url('admin/danh-muc')}}">QL Danh Mục Truyện</a></li>
-					<li><a href="{{url('admin/danh-muc')}}">QL Thể Loại truyện</a></li>
+					<li><a href="{{url('admin/danh-muc')}}">QL Danh Mục Truyện</a></li>
+					<li><a href="{{url('admin/the-loai')}}">QL Thể Loại truyện</a></li>
 					<li><a href="{{url('admin/truyen')}}">QL Truyện</a></li>
 					<li><a href="{{url('admin/tac-gia')}}">QL Tác Giả</a></li>
-					<li><a href="{{url('admin/nhom-dich')}}">QL Nhóm dịch</a></li>
-				</ul></li>
+					
+				</ul>
+			</li>
+			<li><a href="#"><i class="fa fa-table fa-fw"></i>Quản Lý Nhóm Dịch<span
+				class="fa arrow"></span></a>
+			<ul class="nav nav-second-level">
+				<li><a href="{{url('admin/nhom-dich')}}">Danh Sách Nhóm Dịch</a></li>
+				<li><a href="{{url('admin/nhom-dich/thanh-vien')}}">Danh Sách Thành Viên</a></li>
+				<li><a href="{{url('admin/nhom-dich/vai-tro')}}">Vai Trò Thành Viên</a></li>
+				
+			</ul>
+		</li>
 			<li><a href="#"><i class="fa fa-folder fa-fw"></i>Báo Cáo<span
 					class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">

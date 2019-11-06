@@ -29,11 +29,52 @@ Route::prefix('admin')->group(function () {
         Route::post("/insert", 'Admin\DanhMucController@them');
         Route::post("/ajax", 'Admin\DanhMucController@ajax'); // ajax gét dữ liệu lên form sửa danh mục
         Route::post("/ajax/edit",'Admin\DanhMucController@sua'); // ajax sửa dữ liệu danh mục
+        Route::post("/ajax/delete",'Admin\DanhMucController@xoa'); // ajax xóa dữ liệu danh mục
     });
 
-    Route::get("/the-loai", 'Admin\TheLoaiController@theLoaiPage');
-    Route::get("/tac-gia", 'Admin\TacGiaController@tacGiaPage');
-    Route::get("/nhom-dich", 'Admin\NhomDichController@nhomDichPage');
+    Route::prefix('the-loai')->group(function () {
+        Route::get("/", 'Admin\TheLoaiController@theLoaiPage');
+        Route::get("/search", 'Admin\TheLoaiController@search');
+        Route::post("/insert", 'Admin\TheLoaiController@them');
+        Route::post("/ajax", 'Admin\TheLoaiController@ajax'); // ajax gét dữ liệu lên form sửa 
+        Route::post("/ajax/edit",'Admin\TheLoaiController@sua'); // ajax sửa dữ liệu 
+        Route::post("/ajax/delete",'Admin\TheLoaiController@xoa'); // ajax xóa dữ liệu 
+    });
+
+
+    Route::prefix('tac-gia')->group(function () {
+        Route::get("/", 'Admin\TacGiaController@tacGiaPage');
+        Route::get("/search", 'Admin\TacGiaController@search');
+        Route::post("/insert", 'Admin\TacGiaController@them');
+        Route::post("/ajax", 'Admin\TacGiaController@ajax'); // ajax gét dữ liệu lên form sửa 
+        Route::post("/ajax/edit",'Admin\TacGiaController@sua'); // ajax sửa dữ liệu 
+        Route::post("/ajax/delete",'Admin\TacGiaController@xoa'); // ajax xóa dữ liệu 
+    });
+    Route::prefix('nhom-dich')->group(function () {
+        Route::get("/", 'Admin\NhomDichController@nhomDichPage');
+        Route::get("/search", 'Admin\NhomDichController@search');
+        Route::post("/insert", 'Admin\NhomDichController@them');
+        Route::post("/ajax", 'Admin\NhomDichController@ajax'); // ajax gét dữ liệu lên form sửa
+        Route::post("/ajax/edit",'Admin\NhomDichController@sua'); // ajax sửa dữ liệu
+        Route::post("/ajax/delete",'Admin\NhomDichController@xoa'); // ajax xóa dữ liệu 
+
+        Route::prefix('thanh-vien')->group(function () {
+            Route::get("/", 'Admin\NhomDichThanhVienController@thanhVienPage');
+            Route::get("/search", 'Admin\NhomDichThanhVienController@search');
+            Route::post("/insert", 'Admin\NhomDichThanhVienController@them');
+            Route::post("/ajax", 'Admin\NhomDichThanhVienController@ajax'); // ajax gét dữ liệu lên form sửa
+            Route::post("/ajax/edit",'Admin\NhomDichThanhVienController@sua'); // ajax sửa dữ liệu 
+            Route::post("/ajax/delete",'Admin\NhomDichThanhVienController@xoa'); // ajax xóa dữ liệu 
+        });
+        Route::prefix('vai-tro')->group(function () {
+            Route::get("/", 'Admin\NhomDichController@vaiTroPage');
+            Route::get("/search", 'Admin\NhomDichController@search');
+            Route::post("/insert", 'Admin\NhomDichController@them');
+            Route::post("/ajax", 'Admin\NhomDichController@ajax'); // ajax gét dữ liệu lên form sửa
+            Route::post("/ajax/edit",'Admin\NhomDichController@sua'); // ajax sửa dữ liệu 
+            Route::post("/ajax/delete",'Admin\NhomDichController@xoa'); // ajax xóa dữ liệu 
+        });
+    });
     
     Route::prefix('truyen')->group(function () {
         Route::get("/", 'Admin\TruyenController@truyenPage');

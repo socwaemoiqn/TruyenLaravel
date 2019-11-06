@@ -6,7 +6,7 @@
 @section('main')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Quản lý</h1>
+        <h1 class="page-header">Quản lý Danh Mục Truyện</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -54,19 +54,22 @@
                                     <td>{{$item->ten_danh_muc}}</td>
                                     <td class="center">4</td>
                                     <td class="center">
-                                        {{$item->trang_thai}}
+                                            @if ($item->trang_thai == 1)
+                                            {{$item->trang_thai = 'Enable'}}
+                                          @else
+                                            {{$item->trang_thai = 'Disable'}}
+                                            @endif
                                     </td>
                                     <td class="center">
                                         <a class="btn btn-primary btn-circle" title="Tất cả truyện" >
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
-                                    <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle danh-muc-sua" title="Chỉnh sửa danh mục"
-                                        href="${pageContext.request.contextPath}/quan-tri/abcd?id=${us.id}">
+                                    <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa danh mục"
+                                        >
                                             <i class="fa  fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger btn-circle" title="Xóa danh mục"
-                                        href="${pageContext.request.contextPath}/quan-tri/ql_danhmuc_truyen/xoa?id=${us.id}"><i
-                                            class="fa fa-close"></i></a></td>
+                                        <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa danh mục">
+                                            <i class="fa fa-close"></i></a></td>
                                 </tr>
                             @endforeach
                            
@@ -104,8 +107,9 @@
  name="tenDanhMuc" placeholder="Nhập tên danh mục truyện">
                                 </div>
                                 <div class="form-group">
-                                    <label>Giới thiệu</label> <input class="form-control"
-                                   name="gioiThieu" placeholder="Nhập giới thiệu về danh mục">
+                                    <label>Giới thiệu</label> 
+                                    <textarea name="gioiThieu" id="gioiThieu" rows="8" cols="60"></textarea>
+                                    <script>CKEDITOR.replace('gioiThieu');</script>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
                                     danh mục</button>
@@ -145,8 +149,8 @@
                                     id="tenDanhMuc" name="tenDanhMuc" placeholder="Nhập tên danh mục truyện">
                                 </div>
                                 <div class="form-group">
-                                    <label>Giới thiệu</label> <input class="form-control"
-                                    id="gioiThieu"   name="gioiThieu" placeholder="Nhập giới thiệu về danh mục">
+                                    <label>Giới thiệu</label>  <textarea name="gioiThieu" id="gioiThieu2" rows="8" cols="60"></textarea>
+                                    <script>CKEDITOR.replace('gioiThieu2');</script>
                                 </div>
                                 <div class="form-group">
                                     <label>Trạng thái</label>
@@ -173,7 +177,7 @@
 </div>
 <script>
     $(document).ready(function(){
-     $(document).on('click','a.danh-muc-sua',function(){
+     $(document).on('click','a.btn-sua',function(){
           let id =  $(this).attr('id');
           $.ajaxSetup({
                headers: {
@@ -193,7 +197,7 @@
                    $.each(data,function(key,item){
                         $("#sua #id").val(item['id']);
                        $("#sua #tenDanhMuc").val(item['ten_danh_muc']);
-                       $("#sua #gioiThieu").val(item['gioi_thieu']);
+                       CKEDITOR.instances.gioiThieu2.setData(item['gioi_thieu']);
                        if(item["trang_thai"] == 1)
                        {
                          $("#trangThai1").prop("checked",true);
@@ -208,6 +212,7 @@
               } 
            });
      });
+     // Sự kiện get dữ liệu khi click button sửa
      $("#sua button[type=submit]").click(function(e){
         e.preventDefault();
         var trangThai = $("#sua #trangThai1").prop("checked") ? 1 : 0;
@@ -224,16 +229,46 @@
               data: {
                   id: $("#sua #id").val(),
                   tenDanhMuc: $("#sua #tenDanhMuc").val(),
-                  gioiThieu: $("#sua #gioiThieu").val(),
+                  gioiThieu: CKEDITOR.instances.gioiThieu2.setData(),
                   trangThai: trangThai
               },
               success: function(data)
               {
-                alert(data);
+                  $("body").load("admin/danh-muc/");
+           
               },
               error: function(error)
               {
                 alert(error);
+              } 
+           });
+     });
+     // Sự kiện submit sửa dữ liệu
+     $(document).on('click','a.btn-xoa',function(){
+          let id =  $(this).attr('id');
+          if(!confirm('Xác nhận xóa danh mục này?')) return false;
+          $.ajaxSetup({
+               headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+               }
+           });
+           $.ajax({
+              url: "admin/danh-muc/ajax/delete",
+              cache: false,
+              type: "Post",
+              dataType: "text",
+              data: {
+                  id: id
+              },
+              success: function(data)
+              {
+                  
+                    $("body").load("admin/danh-muc/");
+                  
+              },
+              error: function(error)
+              {
+                    alert(error);
               } 
            });
      });

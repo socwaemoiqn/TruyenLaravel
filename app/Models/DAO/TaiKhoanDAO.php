@@ -33,4 +33,8 @@ class TaiKhoanDAO implements TaiKhoanInterface{
         $tai_khoan->save();
         return $tai_khoan;
     }
+    public static function getDataByUserName($tenTaiKhoan)
+    {
+        return TaiKhoan::where('ten_tai_khoan',$tenTaiKhoan)->get();
+    }
 }

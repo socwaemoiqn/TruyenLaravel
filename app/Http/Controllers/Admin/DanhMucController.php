@@ -23,6 +23,14 @@ class DanhMucController extends BaseController
             session(['mess'=>'Thêm danh mục không thành công!']);
         return redirect('admin/danh-muc');
     }
+    public function xoa(Request $request)
+    {
+        if(DanhMucDAO::xoa($request))
+            $mess = "Xóa danh mục thành công!";
+        else      
+            $mess = "Xóa danh mục không thành công!"; 
+         return $mess;
+    }
     public function ajax(Request $request)
     {
         return DanhMucDAO::getDataById($request);

@@ -6,6 +6,8 @@
 <title>Quản Trị</title>
 <base href="{{asset('')}}">
 <script src="assets/admin/js/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <!-- Bootstrap Core CSS -->
 <link href="assets/admin/css/bootstrap.min.css" rel="stylesheet">
 
@@ -36,7 +38,7 @@
 	</div>
 	<!-- jQuery -->
 	
-	
+	<script src="ckeditor/ckeditor.js"></script>
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/admin/js/bootstrap.min.js"></script>
 

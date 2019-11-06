@@ -19,6 +19,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'login','logup','admin/danh-muc/edit'
+        'login','logup',
+        'admin/danh-muc/edit',
+        'admin/danh-muc/insert',
+        'admin/nhom-dich/ajax','admin/nhom-dich/ajax/delete','admin/nhom-dich/insert'
     ];
 }
