@@ -11,16 +11,20 @@ class TacGiaController extends BaseController
         $data = TacGiaDAO::getData();
         return view('admin.ql_tac_gia')->with('data',$data);
     }
+    public function ajaxGetData() /// Đồng bộ hóa ajax thêm sửa xóa , load dữ liêu
+    {
+        return TacGiaDAO::getData();
+    }
     public function them(Request $request){
         if(!TacGiaDAO::checkExist($request))
         {
-
             $TacGia = TacGiaDAO::them($request);
-            session(['mess'=>'Thêm tác giả thành công!']);
+            $mess = "Thêm tác giả thành công!";
         }
         else
-            session(['mess'=>'Thêm tác giả không thành công!']);
-        return redirect('admin/tac-gia');
+            $mess = "Thêm tác giả không thành công!";
+            session(['mess'=>$mess]);
+         return redirect()->back();;
     }
     public function xoa(Request $request)
     {

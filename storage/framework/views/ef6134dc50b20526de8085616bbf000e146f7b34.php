@@ -50,4 +50,5 @@
 	<!-- Custom Theme JavaScript -->
 	<script src="assets/admin/js/startmin.js"></script>
 </body>
+	<?php echo $__env->yieldContent('js'); ?>
 </html><?php /**PATH D:\HocTap\xampp\htdocs\NhomTruyenLaravel\resources\views/layout/admin/master.blade.php ENDPATH**/ ?>

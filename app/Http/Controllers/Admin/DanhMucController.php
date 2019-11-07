@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\DAO\DanhMucDAO;
-use App\Models\DanhMuc;
 use Illuminate\Routing\Controller as BaseController;
 
 class DanhMucController extends BaseController
@@ -11,6 +10,10 @@ class DanhMucController extends BaseController
     public function danhMucPage(){
         $data = DanhMucDAO::getData();
         return view('admin.ql_danh_muc')->with('data',$data);
+    }
+    public function ajaxGetData() /// Đồng bộ hóa ajax thêm sửa xóa , load dữ liêu
+    {
+        return TacGiaDAO::getData();
     }
     public function them(Request $request){
         if(!DanhMucDAO::checkExist($request))

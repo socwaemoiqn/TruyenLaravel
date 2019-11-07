@@ -50,4 +50,5 @@
 	<!-- Custom Theme JavaScript -->
 	<script src="assets/admin/js/startmin.js"></script>
 </body>
+	@yield('js')
 </html>

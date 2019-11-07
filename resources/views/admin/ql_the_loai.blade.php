@@ -245,30 +245,34 @@
      // Sự kiện submit sửa dữ liệu
      $(document).on('click','a.btn-xoa',function(){
           let id =  $(this).attr('id');
-          if(!confirm('Xác nhận xóa thể loại này?')) return false;
-          $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-           $.ajax({
-              url: "admin/the-loai/ajax/delete",
-              cache: false,
-              type: "Post",
-              dataType: "text",
-              data: {
+          $.confirm({
+            title: 'Cảnh báo!',
+            content: 'Xác nhận xóa thể loại này?',
+            buttons: {
+                confirm: {
+                text: "Xác nhận",
+                btnClass: 'btn-blue',
+                keys: ['enter'],
+                action :function () {
+                 $.ajax({
+                 url: "admin/the-loai/ajax/delete",
+                 cache: false,
+                type: "Post",
+                 dataType: "text",
+                 data: {
                   id: id
-              },
-              success: function(data)
-              {
+                },
+                success: function(data)
+                {
                     $("body").load("admin/the-loai/");
-                   alert(data);
-              },
-              error: function(error)
-              {
-                    alert(error);
-              } 
-           });
+                }    
+                });
+                 }
+                },
+                 cancel: function () {
+                 }
+                 }
+                });       
      });
    });
 </script>

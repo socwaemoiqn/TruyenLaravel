@@ -249,31 +249,34 @@
      // Sự kiện submit sửa dữ liệu
      $(document).on('click','a.btn-xoa',function(){
           let id =  $(this).attr('id');
-          if(!confirm('Xác nhận xóa danh mục này?')) return false;
-          $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-           $.ajax({
-              url: "admin/danh-muc/ajax/delete",
-              cache: false,
-              type: "Post",
-              dataType: "text",
-              data: {
+          $.confirm({
+            title: 'Cảnh báo!',
+            content: 'Xác nhận xóa danh mục này?',
+            buttons: {
+                confirm: {
+                text: "Xác nhận",
+                btnClass: 'btn-blue',
+                keys: ['enter'],
+                action :function () {
+                 $.ajax({
+                 url: "admin/danh-muc/ajax/delete",
+                 cache: false,
+                type: "Post",
+                 dataType: "text",
+                 data: {
                   id: id
-              },
-              success: function(data)
-              {
-                  
+                },
+                success: function(data)
+                {
                     $("body").load("admin/danh-muc/");
-                  
-              },
-              error: function(error)
-              {
-                    alert(error);
-              } 
-           });
+                }    
+                });
+                 }
+                },
+                 cancel: function () {
+                 }
+                 }
+                });       
      });
    });
 </script>

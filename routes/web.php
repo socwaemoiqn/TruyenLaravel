@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function () {
         Route::get("/search", 'Admin\DanhMucController@search');
         Route::post("/insert", 'Admin\DanhMucController@them');
         Route::post("/ajax", 'Admin\DanhMucController@ajax'); // ajax gét dữ liệu lên form sửa danh mục
+        Route::post("/ajax/get", 'Admin\DanhMucController@ajaxGetData');
         Route::post("/ajax/edit",'Admin\DanhMucController@sua'); // ajax sửa dữ liệu danh mục
         Route::post("/ajax/delete",'Admin\DanhMucController@xoa'); // ajax xóa dữ liệu danh mục
     });
@@ -45,8 +46,9 @@ Route::prefix('admin')->group(function () {
     Route::prefix('tac-gia')->group(function () {
         Route::get("/", 'Admin\TacGiaController@tacGiaPage');
         Route::get("/search", 'Admin\TacGiaController@search');
-        Route::post("/insert", 'Admin\TacGiaController@them');
         Route::post("/ajax", 'Admin\TacGiaController@ajax'); // ajax gét dữ liệu lên form sửa 
+        Route::post("/ajax/get", 'Admin\TacGiaController@ajaxGetData'); //ajax gét toàn bồ dữ liệu
+        Route::post("/insert", 'Admin\TacGiaController@them'); // ajax thêm dữ liệu
         Route::post("/ajax/edit",'Admin\TacGiaController@sua'); // ajax sửa dữ liệu 
         Route::post("/ajax/delete",'Admin\TacGiaController@xoa'); // ajax xóa dữ liệu 
     });

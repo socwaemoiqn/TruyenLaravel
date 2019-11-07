@@ -253,13 +253,13 @@
      $(document).on('click','a.btn-xoa',function(){
           let id =  $(this).attr('id');
           $.confirm({
-    title: 'Cảnh báo!',
-    content: 'Xác nhận xóa nhóm dịch này?',
-    buttons: {
-        confirm: {
-            text: "Xác nhận",
-            btnClass: 'btn-blue',
-            keys: ['enter'],
+            title: 'Cảnh báo!',
+            content: 'Xác nhận xóa nhóm dịch này?',
+            buttons: {
+                confirm: {
+                text: "Xác nhận",
+                btnClass: 'btn-blue',
+                keys: ['enter'],
                 action :function () {
                  $.ajax({
                  url: "admin/nhom-dich/ajax/delete",
@@ -273,16 +273,13 @@
                 {
                     $("body").load("admin/nhom-dich/");
                 }    
-           });
-            }
-        },
-        cancel: function () {
-          
-        }
-       
-    }
-});
-          
+                });
+                 }
+                },
+                 cancel: function () {
+                 }
+                 }
+                });       
      });
      // Sự kiện xóa dữ liệu
    });

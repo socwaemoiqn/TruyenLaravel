@@ -20,8 +20,11 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'login','logup',
-        'admin/danh-muc/edit',
-        'admin/danh-muc/insert',
-        'admin/nhom-dich/ajax','admin/nhom-dich/ajax/delete','admin/nhom-dich/insert'
+        'admin/danh-muc/ajax','admin/danh-muc/ajax/get','admin/danh-muc/ajax/add','admin/danh-muc/ajax/edit','admin/danh-muc/ajax/delete',
+        'admin/the-loai/insert','admin/the-loai/ajax','admin/the-loai/ajax/edit','admin/the-loai/ajax/delete',
+        'admin/tac-gia/insert','admin/tac-gia/ajax','admin/tac-gia/ajax/get','admin/tac-gia/ajax/edit','admin/tac-gia/ajax/delete',
+        'admin/nhom-dich/insert','admin/nhom-dich/ajax','admin/nhom-dich/ajax/edit','admin/nhom-dich/ajax/delete',
+        'admin/nhom-dich/thanh-vien/insert','admin/nhom-dich/thanh-vien/ajax','admin/nhom-dich/thanh-vien/ajax/edit','admin/nhom-dich/thanh-vien/ajax/delete',
+        'admin/nhom-dich/vai-tro/insert','admin/nhom-dich/vai-tro/ajax','admin/nhom-dich/vai-tro/ajax/edit','admin/nhom-dich/vai-tro/ajax/delete'
     ];
 }
