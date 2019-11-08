@@ -8,26 +8,19 @@ class TacGiaDAO implements TacGiaInterface{
     private static $limit = 10;
     private static $ten_tac_gia = 'ten_tac_gia';
     private static $url = 'admin/tac-gia';
-    public static function checkExist(Request $request){
-        if(TacGia::where(TacGiaDAO::$ten_tac_gia,$request->tenTacGia)->count() > 0)
-        {
-            return true;
-        }
-        return false;
-    }
     public static function them(Request $request){
         $tac_gia = new TacGia;
-        $tac_gia->ten_tac_gia = $request->tenTacGia;
-        $tac_gia->gioi_thieu = $request->gioiThieu;
+        $tac_gia->ten_tac_gia = $request->ten_tac_gia;
+        $tac_gia->gioi_thieu = $request->gioi_thieu;
         $tac_gia->trang_thai = 1;
         $tac_gia->save();
         return $tac_gia;
     }
     public static function sua(Request $request){
         $tac_gia = TacGia::find($request->id);
-        $tac_gia->ten_tac_gia = $request->tenTacGia;
-        $tac_gia->gioi_thieu = $request->gioiThieu;
-        $tac_gia->trang_thai = $request->trangThai;
+        $tac_gia->ten_tac_gia = $request->ten_tac_gia;
+        $tac_gia->gioi_thieu = $request->gioi_thieu;
+        $tac_gia->trang_thai = $request->trang_thai;
         $tac_gia->save();
         return $tac_gia;
     }   

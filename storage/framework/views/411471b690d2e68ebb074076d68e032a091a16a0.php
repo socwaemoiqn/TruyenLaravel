@@ -1,19 +1,21 @@
 <?php if(session('mess')): ?>
-  <script>alert("<?php echo e(session('mess')); ?>");</script>
-  <?php echo e(Session::flush()); ?>
+    <script>alert("<?php echo e(session('mess')); ?>");</script>
+    <?php echo e(Session::flush()); ?>
 
-
-  <?php endif; ?> 
-  <?php if(isset($mess)): ?>
-  <?php $__currentLoopData = $mess; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-  <?php echo e($item); ?>
-
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-  <?php endif; ?>
+<?php endif; ?> 
 <?php $__env->startSection('main'); ?>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">Quản lý Tác Giả</h1>
+        <?php if($errors->any()): ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </ul>
+            </div>
+            <?php endif; ?>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -76,8 +78,11 @@
                                     <a data-toggle="modal" id="<?php echo e($item->id); ?>" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa tác giả">
                                             <i class="fa  fa-edit"></i>
                                         </a>
-                                        <a id="<?php echo e($item->id); ?>" class="btn btn-danger btn-circle btn-xoa" title="Xóa tác giả">
+                                    <form id="form<?php echo e($item->id); ?>" action="<?php echo e(url('admin/tac-gia/delete/'.$item->id)); ?>" method="post">
+                                        <a id="<?php echo e($item->id); ?>" class="btn btn-danger btn-circle btn-xoa" title="Xóa tác giả" >
                                             <i class="fa fa-close"></i></a></td>
+                                    </form>
+                                   
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                            
@@ -110,11 +115,11 @@
                             <form action="<?php echo e(url('admin/tac-gia/insert')); ?>"method="post">
                                 <div class="form-group">
                                     <label>Tên tác giả </label> <input class="form-control"
-                                name="tenTacGia" id="tenTacGia" placeholder="Nhập tên tác giả truyện">
+                                name="ten_tac_gia" id="tenTacGia" placeholder="Nhập tên tác giả truyện">
                                 </div>
                                 <div class="form-group">
                                     <label>Giới thiệu</label> 
-                                    <textarea name="gioiThieu" id="gioiThieu" rows="8" cols="60"></textarea>
+                                    <textarea name="gioi_thieu" id="gioiThieu" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu');</script>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
@@ -143,7 +148,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <form
-                                action=""
+                                 action="<?php echo e(url('admin/tac-gia/edit')); ?>"
                                 method="post">
                                
                                 <div class="form-group">
@@ -152,20 +157,20 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Tên tác giả</label> <input class="form-control"
-                                    id="tenTacGia" name="tenTacGia" placeholder="Nhập tên tác giả">
+                                    name="ten_tac_gia"  id="tenTacGia" placeholder="Nhập tên tác giả">
                                 </div>
                                 <div class="form-group">
-                                    <label>Giới thiệu</label>  <textarea name="gioiThieu" id="gioiThieu2" rows="8" cols="60"></textarea>
+                                    <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu2');</script>
                                 </div>
                                 <div class="form-group">
                                     <label>Trạng thái</label>
                                     <div class="form-group">
                                     <label class="radio-inline">
-                                        <input type="radio" name="trangThai" id="trangThai1" value="1" checked=""> Enable
+                                        <input type="radio" name="trang_thai" id="trangThai1" value="1" checked=""> Enable
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="trangThai" id="trangThai0" value="0"> Disable
+                                        <input type="radio" name="trang_thai" id="trangThai0" value="0"> Disable
                                     </label>
                                     </div>
                                 </div>
@@ -181,7 +186,6 @@
         <!-- //Modal content-->
     </div>
 </div>
-
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
 <script>
@@ -222,107 +226,30 @@
               } 
            });
      });
-     // Sự kiện submit sửa dữ liệu
-     $("#sua button[type=submit]").click(function(e){
-        e.preventDefault();
-        var trangThai = $("#sua #trangThai1").prop("checked") ? 1 : 0;
-        $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-           $.ajax({
-              url: "admin/tac-gia/ajax/edit",
-              cache: false,
-              type: "Post",
-              dataType: "text",
-              data: {
-                  id: $("#sua #id").val(),
-                  tenTacGia: $("#sua #tenTacGia").val(),
-                  gioiThieu: CKEDITOR.instances.gioiThieu2.setData(),
-                  trangThai: trangThai
-              },
-              success: function(data)
-              {
-                 ajaxGetData();
-                alert(data);
-              }
-           });
-     });
       // Sự kiện xóa dữ liệu
-     $(document).on('click','a.btn-xoa',function(){
-          let id =  $(this).attr('id');
-          $.confirm({
-            title: 'Cảnh báo!',
-            content: 'Xác nhận xóa tác giả này?',
-            buttons: {
-                confirm: {
-                text: "Xác nhận",
-                btnClass: 'btn-blue',
-                keys: ['enter'],
-                action :function () {
-                 $.ajax({
-                 url: "admin/tac-gia/ajax/delete",
-                 cache: false,
-                type: "Post",
-                 dataType: "text",
-                 data: {
-                  id: id
-                },
-                success: function(data)
-                {
-                    alert(data);
-                    ajaxGetData();
-                   
-                }    
+     $(document).on('click','a.btn-xoa',function(e){
+        let id = $(this).attr('id');
+        $.confirm({
+        title: 'Cảnh báo!',
+        content: 'Xác nhận xóa tác giả này?',
+        buttons: {
+                    confirm: {
+                    text: 'Xác nhận',
+                    btnClass: 'btn-blue',
+                    keys: ['enter'],
+                    action: function(){
+                        $('#form'+id).submit();
+                    }
+                    },
+                    cancel: {
+                        text: 'Trở lại',
+                        keys: ['esc'],
+                        action: function(){}
+                    }
+                    }
                 });
-                 }
-                },
-                 cancel: function () {
-                 }
-                 }
-                });       
-     });   
-   });
-   // ajax Load dữ liệu 
-   function ajaxGetData()
-   {
-       let html = "";
-       let i = 0;
-        $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-       $.ajax({
-          url: "admin/tac-gia/ajax/get",
-          cache: false,
-                type: "Post",
-                 dataType: "text",
-                 data: {
-                },
-                success: function(data)
-                {
-                    $.each(data,function(key,item)
-                    {
-                       html += '<tr class="odd gradeX">';
-                        html +='<td scope="row">'+(i+1)+'</td>';
-                            html +='<td>'+item[0]+'</td>';
-                                html +=' <td>'+item.data['ten_tac_gia']+'</td>';
-                                    html +='   <td class="center">4</td>';
-                                        html += ' <td class="center">'+item.data['trang_thai']+' </td>';
-                                         html += ' <td class="center"> <a class="btn btn-primary btn-circle" title="Tất cả truyện" ><i class="fa fa-list-ul"></i></a>';
-                                             html += '<a data-toggle="modal" id="'+item.data['id']+'" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa tác giả"><i class="fa  fa-edit"></i></a>';
-                                                 html += '<a id="'+item.data['id']+'" class="btn btn-danger btn-circle btn-xoa" title="Xóa tác giả"><i class="fa fa-close"></i></a></td></tr>';
-                     i += 1;          
-                   });
-                   $(".table-danh-muc tbody").html(html);
-                }    
-       });
-      
-   }
-   
-                      
+            });   
+        });                    
 </script>
 <?php $__env->stopSection(); ?>
 
