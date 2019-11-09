@@ -20,7 +20,7 @@ class NhomDichThanhVienDAO implements NhomDichThanhVienInterface{
     }
     public static function them(Request $request){
         $nhom_dich_tv = new NhomDichThanhVien;
-        $nhom_dich_tv->tai_khoan_id = 6;
+        $nhom_dich_tv->tai_khoan_id = 6; // xem lỗi ở đây
         $nhom_dich_tv->nhom_dich_id = $request->nhomDichID;
         $nhom_dich_tv->nhom_dich_vai_tro_id = $request->nhomDichVaiTroID;
         $nhom_dich_tv->trang_thai = 1; 

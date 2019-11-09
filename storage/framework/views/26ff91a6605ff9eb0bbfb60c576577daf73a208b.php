@@ -1,12 +1,21 @@
 <?php if(session('mess')): ?>
-  <script>alert("<?php echo e(session('mess')); ?>");</script>
-  <?php echo e(Session::flush()); ?>
+    <script>alert("<?php echo e(session('mess')); ?>");</script>
+    <?php echo e(Session::flush()); ?>
 
-  <?php endif; ?> 
+<?php endif; ?> 
 <?php $__env->startSection('main'); ?>
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Quản lý Danh Mục Truyện</h1>
+        <h1 class="page-header">Quản lý Danh Mục</h1>
+        <?php if($errors->any()): ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </ul>
+            </div>
+            <?php endif; ?>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -14,7 +23,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading">Danh Mục Truyện</div>
+            <div class="panel-heading"></div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="table-responsive">
@@ -28,19 +37,19 @@
                                     value="Tìm kiếm"></td>
                                 </form>
                                 <td><a
-                                    href="${pageContext.request.contextPath}/quan-tri/ql_danhmuc_truyen/them"
+                                    href=""
                                     class="btn btn-primary" data-toggle="modal"
                                     data-target="#themmoi">Thêm Mới</a></td>
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table table-striped table-bordered table-hover"
-                        id="dataTables-example">
+                    <table class="table table-striped table-bordered table-hover table-danh-muc"
+                        id="dataTables-example ">
                         <thead>
                             <tr>
                                 <th id="btn1">STT</th>
-                                <th>ID Danh mục</th>
-                                <th>Tên Danh Mục</th>
+                                <th>ID danh mục</th>
+                                <th>Tên danh mục</th>
                                 <th>Số lượng Truyện</th>
                                 <th>Trạng Thái</th>
                                 <th></th>
@@ -54,31 +63,34 @@
                                     <td><?php echo e($item->ten_danh_muc); ?></td>
                                     <td class="center">4</td>
                                     <td class="center">
-                                            <?php if($item->trang_thai == 1): ?>
-                                            <?php echo e($item->trang_thai = 'Enable'); ?>
+                                        <?php if($item->trang_thai == 1): ?>
+                                                <?php echo e($item->trang_thai = 'Enable'); ?>
 
-                                          <?php else: ?>
-                                            <?php echo e($item->trang_thai = 'Disable'); ?>
+                                        <?php else: ?>
+                                                <?php echo e($item->trang_thai = 'Disable'); ?>
 
-                                            <?php endif; ?>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="center">
+                                     <form id="form<?php echo e($item->id); ?>" action="<?php echo e(url('admin/danh-muc/delete/'.$item->id)); ?>" method="post">
                                         <a class="btn btn-primary btn-circle" title="Tất cả truyện" >
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
-                                    <a data-toggle="modal" id="<?php echo e($item->id); ?>" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa danh mục"
-                                        >
+                                    <a data-toggle="modal" id="<?php echo e($item->id); ?>" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa danh mục">
                                             <i class="fa  fa-edit"></i>
-                                        </a>
-                                        <a id="<?php echo e($item->id); ?>" class="btn btn-danger btn-circle btn-xoa" title="Xóa danh mục">
-                                            <i class="fa fa-close"></i></a></td>
+                                        </a> <a id="<?php echo e($item->id); ?>" class="btn btn-danger btn-circle btn-xoa" title="Xóa danh mục" >
+                                            <i class="fa fa-close"></i></a>
+                                    </td>
+                                    </form>
+                                   
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                            
-        
+                    
                         </tbody>
                     </table>
-                   
+                    <?php echo e($data->links()); ?>
+
                 </div>
             </div>
             <!-- /.panel-body -->
@@ -94,24 +106,20 @@
             <div class="panel panel-green">
 
                 <div class="panel-heading">
-                    <h4>Thêm danh mục truyện mới</h4>
+                    <h4>Thêm danh mục mới</h4>
                 </div>
                 <div class="panel-body">
-                    <h4>Nhập thông tin về danh mục truyện</h4>
+                    <h4>Nhập thông tin về danh mục </h4>
                     <div class="row">
                         <div class="col-lg-12">
-                            <form
-                        action="<?php echo e(url('admin/danh-muc/insert')); ?>"
-                                method="post">
-                               <?php echo e(csrf_field()); ?>
-
+                            <form action="<?php echo e(url('admin/danh-muc/insert')); ?>"method="post">
                                 <div class="form-group">
-                                    <label>Tên danh mục truyện</label> <input class="form-control"
- name="tenDanhMuc" placeholder="Nhập tên danh mục truyện">
+                                    <label>Tên danh mục </label> <input class="form-control"
+                                name="ten_danh_muc" id="ten_danh_muc" placeholder="Nhập tên danh mục truyện">
                                 </div>
                                 <div class="form-group">
                                     <label>Giới thiệu</label> 
-                                    <textarea name="gioiThieu" id="gioiThieu" rows="8" cols="60"></textarea>
+                                    <textarea name="gioi_thieu" id="gioiThieu" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu');</script>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
@@ -133,36 +141,36 @@
             <div class="panel panel-green">
 
                 <div class="panel-heading">
-                    <h4>Sửa danh mục truyện mới</h4>
+                    <h4>Sửa danh mục</h4>
                 </div>
                 <div class="panel-body">
-                    <h4>Nhập thông tin về danh mục truyện</h4>
+                    <h4>Nhập thông tin về danh mục </h4>
                     <div class="row">
                         <div class="col-lg-12">
                             <form
-                                action=""
+                                 action="<?php echo e(url('admin/danh-muc/edit')); ?>"
                                 method="post">
                                
                                 <div class="form-group">
-                                    <label>ID Danh mục</label> <input class="form-control"
+                                    <label>ID danh mục</label> <input class="form-control"
                                     id="id" name="id" value="" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Tên danh mục truyện</label> <input class="form-control"
-                                    id="tenDanhMuc" name="tenDanhMuc" placeholder="Nhập tên danh mục truyện">
+                                    <label>Tên danh mục</label> <input class="form-control"
+                                    name="ten_danh_muc"  id="ten_danh_muc" placeholder="Nhập tên danh mục">
                                 </div>
                                 <div class="form-group">
-                                    <label>Giới thiệu</label>  <textarea name="gioiThieu" id="gioiThieu2" rows="8" cols="60"></textarea>
+                                    <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu2');</script>
                                 </div>
                                 <div class="form-group">
                                     <label>Trạng thái</label>
                                     <div class="form-group">
                                     <label class="radio-inline">
-                                        <input type="radio" name="trangThai" id="trangThai1" value="1" checked=""> Enable
+                                        <input type="radio" name="trang_thai" id="trangThai1" value="1" checked=""> Enable
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="trangThai" id="trangThai0" value="0"> Disable
+                                        <input type="radio" name="trang_thai" id="trangThai0" value="0"> Disable
                                     </label>
                                     </div>
                                 </div>
@@ -178,8 +186,11 @@
         <!-- //Modal content-->
     </div>
 </div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('js'); ?>
 <script>
     $(document).ready(function(){
+    // Sự kiện get dữ liệu khi click button sửa
      $(document).on('click','a.btn-sua',function(){
           let id =  $(this).attr('id');
           $.ajaxSetup({
@@ -199,7 +210,7 @@
               {
                    $.each(data,function(key,item){
                         $("#sua #id").val(item['id']);
-                       $("#sua #tenDanhMuc").val(item['ten_danh_muc']);
+                       $("#sua #ten_danh_muc").val(item['ten_danh_muc']);
                        CKEDITOR.instances.gioiThieu2.setData(item['gioi_thieu']);
                        if(item["trang_thai"] == 1)
                        {
@@ -215,70 +226,30 @@
               } 
            });
      });
-     // Sự kiện get dữ liệu khi click button sửa
-     $("#sua button[type=submit]").click(function(e){
-        e.preventDefault();
-        var trangThai = $("#sua #trangThai1").prop("checked") ? 1 : 0;
-        $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-           $.ajax({
-              url: "admin/danh-muc/ajax/edit",
-              cache: false,
-              type: "Post",
-              dataType: "text",
-              data: {
-                  id: $("#sua #id").val(),
-                  tenDanhMuc: $("#sua #tenDanhMuc").val(),
-                  gioiThieu: CKEDITOR.instances.gioiThieu2.setData(),
-                  trangThai: trangThai
-              },
-              success: function(data)
-              {
-                  $("body").load("admin/danh-muc/");
-           
-              },
-              error: function(error)
-              {
-                alert(error);
-              } 
-           });
-     });
-     // Sự kiện submit sửa dữ liệu
-     $(document).on('click','a.btn-xoa',function(){
-          let id =  $(this).attr('id');
-          $.confirm({
-            title: 'Cảnh báo!',
-            content: 'Xác nhận xóa danh mục này?',
-            buttons: {
-                confirm: {
-                text: "Xác nhận",
-                btnClass: 'btn-blue',
-                keys: ['enter'],
-                action :function () {
-                 $.ajax({
-                 url: "admin/danh-muc/ajax/delete",
-                 cache: false,
-                type: "Post",
-                 dataType: "text",
-                 data: {
-                  id: id
-                },
-                success: function(data)
-                {
-                    $("body").load("admin/danh-muc/");
-                }    
+      // Sự kiện xóa dữ liệu
+     $(document).on('click','a.btn-xoa',function(e){
+        let id = $(this).attr('id');
+        $.confirm({
+        title: 'Cảnh báo!',
+        content: 'Xác nhận xóa danh mục này?',
+        buttons: {
+                    confirm: {
+                    text: 'Xác nhận',
+                    btnClass: 'btn-blue',
+                    keys: ['enter'],
+                    action: function(){
+                        $('#form'+id).submit();
+                    }
+                    },
+                    cancel: {
+                        text: 'Trở lại',
+                        keys: ['esc'],
+                        action: function(){}
+                    }
+                    }
                 });
-                 }
-                },
-                 cancel: function () {
-                 }
-                 }
-                });       
-     });
-   });
+            });   
+        });                    
 </script>
 <?php $__env->stopSection(); ?>
 

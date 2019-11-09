@@ -31,6 +31,6 @@ class VerifyCsrfToken extends Middleware
         // Nhóm dịch thành viên
         'admin/nhom-dich/thanh-vien/insert','admin/nhom-dich/thanh-vien/ajax','admin/nhom-dich/thanh-vien/ajax/edit','admin/nhom-dich/thanh-vien/ajax/delete',
        // Nhóm dịch vai trò
-        'admin/nhom-dich/vai-tro/insert','admin/nhom-dich/vai-tro/ajax','admin/nhom-dich/vai-tro/ajax/edit','admin/nhom-dich/vai-tro/ajax/delete'
+        'admin/nhom-dich/vai-tro/*'
     ];
 }

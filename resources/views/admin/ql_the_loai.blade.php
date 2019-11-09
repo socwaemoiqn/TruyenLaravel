@@ -1,12 +1,21 @@
 @extends('layout.admin.master')
 @if (session('mess'))
-  <script>alert("{{ session('mess') }}");</script>
-  {{Session::flush()}}
-  @endif 
+    <script>alert("{{ session('mess') }}");</script>
+    {{Session::flush()}}
+@endif 
 @section('main')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Quản lý Thể loại Truyện</h1>
+        <h1 class="page-header">Quản lý thể loại</h1>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -28,19 +37,19 @@
                                     value="Tìm kiếm"></td>
                                 </form>
                                 <td><a
-                                    href="${pageContext.request.contextPath}/quan-tri/ql_danhmuc_truyen/them"
+                                    href=""
                                     class="btn btn-primary" data-toggle="modal"
                                     data-target="#themmoi">Thêm Mới</a></td>
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table table-striped table-bordered table-hover"
-                        id="dataTables-example">
+                    <table class="table table-striped table-bordered table-hover table-danh-muc"
+                        id="dataTables-example ">
                         <thead>
                             <tr>
                                 <th id="btn1">STT</th>
-                                <th>ID Thể Loại</th>
-                                <th>Tên Thể Loại</th>
+                                <th>ID thể loại</th>
+                                <th>Tên thể loại</th>
                                 <th>Số lượng Truyện</th>
                                 <th>Trạng Thái</th>
                                 <th></th>
@@ -54,29 +63,31 @@
                                     <td>{{$item->ten_the_loai}}</td>
                                     <td class="center">4</td>
                                     <td class="center">
-                                            @if ($item->trang_thai == 1)
-                                            {{$item->trang_thai = 'Enable'}}
-                                          @else
-                                            {{$item->trang_thai = 'Disable'}}
-                                    @endif
+                                        @if ($item->trang_thai == 1)
+                                                {{$item->trang_thai = 'Enable'}}
+                                        @else
+                                                {{$item->trang_thai = 'Disable'}}
+                                        @endif
                                     </td>
                                     <td class="center">
+                                     <form id="form{{$item->id}}" action="{{url('admin/the-loai/delete/'.$item->id)}}" method="post">
                                         <a class="btn btn-primary btn-circle" title="Tất cả truyện" >
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
-                                    <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa thể loại"
-                                        >
+                                    <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa thể loại">
                                             <i class="fa  fa-edit"></i>
-                                        </a>
-                                        <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa thể loại">
-                                            <i class="fa fa-close"></i></a></td>
+                                        </a> <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa thể loại" >
+                                            <i class="fa fa-close"></i></a>
+                                    </td>
+                                    </form>
+                                   
                                 </tr>
                             @endforeach
                            
-        
+                    
                         </tbody>
                     </table>
-                   
+                    {{ $data->links() }}
                 </div>
             </div>
             <!-- /.panel-body -->
@@ -92,22 +103,20 @@
             <div class="panel panel-green">
 
                 <div class="panel-heading">
-                    <h4>Thêm thể loại truyện mới</h4>
+                    <h4>Thêm thể loại mới</h4>
                 </div>
                 <div class="panel-body">
-                    <h4>Nhập thông tin về thể loại truyện</h4>
+                    <h4>Nhập thông tin về thể loại </h4>
                     <div class="row">
                         <div class="col-lg-12">
-                            <form
-                        action="{{url('admin/the-loai/insert')}}"
-                                method="post">
-                               {{  csrf_field()  }}
+                            <form action="{{url('admin/the-loai/insert')}}"method="post">
                                 <div class="form-group">
-                                    <label>Tên thể loại truyện</label> <input class="form-control"
- name="tenTheLoai" placeholder="Nhập tên thể loại truyện">
+                                    <label>Tên thể loại </label> <input class="form-control"
+                                name="ten_the_loai" id="ten_the_loai" placeholder="Nhập tên thể loại truyện">
                                 </div>
                                 <div class="form-group">
-                                    <label>Giới thiệu</label> <textarea name="gioiThieu" id="gioiThieu" rows="8" cols="60"></textarea>
+                                    <label>Giới thiệu</label> 
+                                    <textarea name="gioi_thieu" id="gioiThieu" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu');</script>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
@@ -129,14 +138,14 @@
             <div class="panel panel-green">
 
                 <div class="panel-heading">
-                    <h4>Sửa thể loại truyện mới</h4>
+                    <h4>Sửa thể loại</h4>
                 </div>
                 <div class="panel-body">
-                    <h4>Nhập thông tin về thể loại truyện</h4>
+                    <h4>Nhập thông tin về thể loại </h4>
                     <div class="row">
                         <div class="col-lg-12">
                             <form
-                                action=""
+                                 action="{{url('admin/the-loai/edit')}}"
                                 method="post">
                                
                                 <div class="form-group">
@@ -144,21 +153,21 @@
                                     id="id" name="id" value="" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Tên thể loại truyện</label> <input class="form-control"
-                                    id="tenTheLoai" name="tenTheLoai" placeholder="Nhập tên thể loại truyện">
+                                    <label>Tên thể loại</label> <input class="form-control"
+                                    name="ten_the_loai"  id="ten_the_loai" placeholder="Nhập tên thể loại">
                                 </div>
                                 <div class="form-group">
-                                    <label>Giới thiệu</label> <textarea name="gioiThieu" id="gioiThieu2" rows="8" cols="60"></textarea>
+                                    <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu2');</script>
                                 </div>
                                 <div class="form-group">
                                     <label>Trạng thái</label>
                                     <div class="form-group">
                                     <label class="radio-inline">
-                                        <input type="radio" name="trangThai" id="trangThai1" value="1" checked=""> Enable
+                                        <input type="radio" name="trang_thai" id="trangThai1" value="1" checked=""> Enable
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="trangThai" id="trangThai0" value="0"> Disable
+                                        <input type="radio" name="trang_thai" id="trangThai0" value="0"> Disable
                                     </label>
                                     </div>
                                 </div>
@@ -174,8 +183,11 @@
         <!-- //Modal content-->
     </div>
 </div>
+@endsection
+@section('js')
 <script>
     $(document).ready(function(){
+    // Sự kiện get dữ liệu khi click button sửa
      $(document).on('click','a.btn-sua',function(){
           let id =  $(this).attr('id');
           $.ajaxSetup({
@@ -195,7 +207,7 @@
               {
                    $.each(data,function(key,item){
                         $("#sua #id").val(item['id']);
-                       $("#sua #tenTheLoai").val(item['ten_the_loai']);
+                       $("#sua #ten_the_loai").val(item['ten_the_loai']);
                        CKEDITOR.instances.gioiThieu2.setData(item['gioi_thieu']);
                        if(item["trang_thai"] == 1)
                        {
@@ -211,69 +223,29 @@
               } 
            });
      });
-     // Sự kiện get dữ liệu khi click button sửa
-     $("#sua button[type=submit]").click(function(e){
-        e.preventDefault();
-        var trangThai = $("#sua #trangThai1").prop("checked") ? 1 : 0;
-        $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-           $.ajax({
-              url: "admin/the-loai/ajax/edit",
-              cache: false,
-              type: "Post",
-              dataType: "text",
-              data: {
-                  id: $("#sua #id").val(),
-                  tenTheLoai: $("#sua #tenTheLoai").val(),
-                  gioiThieu: CKEDITOR.instances.gioiThieu2.getData(),
-                  trangThai: trangThai
-              },
-              success: function(data)
-              {
-                  $("body").load("admin/the-loai/");
-                alert(data);
-              },
-              error: function(error)
-              {
-                alert(error);
-              } 
-           });
-     });
-     // Sự kiện submit sửa dữ liệu
-     $(document).on('click','a.btn-xoa',function(){
-          let id =  $(this).attr('id');
-          $.confirm({
-            title: 'Cảnh báo!',
-            content: 'Xác nhận xóa thể loại này?',
-            buttons: {
-                confirm: {
-                text: "Xác nhận",
-                btnClass: 'btn-blue',
-                keys: ['enter'],
-                action :function () {
-                 $.ajax({
-                 url: "admin/the-loai/ajax/delete",
-                 cache: false,
-                type: "Post",
-                 dataType: "text",
-                 data: {
-                  id: id
-                },
-                success: function(data)
-                {
-                    $("body").load("admin/the-loai/");
-                }    
+      // Sự kiện xóa dữ liệu
+     $(document).on('click','a.btn-xoa',function(e){
+        let id = $(this).attr('id');
+        $.confirm({
+        title: 'Cảnh báo!',
+        content: 'Xác nhận xóa thể loại này?',
+        buttons: {
+                    confirm: {
+                    text: 'Xác nhận',
+                    btnClass: 'btn-blue',
+                    keys: ['enter'],
+                    action: function(){
+                        $('#form'+id).submit();
+                    }
+                    },
+                    cancel: {
+                        text: 'Trở lại',
+                        keys: ['esc'],
+                        action: function(){}
+                    }
+                    }
                 });
-                 }
-                },
-                 cancel: function () {
-                 }
-                 }
-                });       
-     });
-   });
+            });   
+        });                    
 </script>
 @endsection

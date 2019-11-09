@@ -19,7 +19,7 @@ class NhomDichController extends BaseController
              $nhom_dich = NhomDichDAO::them($request);
 
              $tai_khoan_id = TaiKhoanDAO::getDataByUserName($request->tenTaiKhoan);
-             $request->request->set('taiKhoanID', $tai_khoan_id);
+             $request->request->set('taiKhoanID', $tai_khoan_id); // xem lại ở đây là trả về 1 mảng các đổi tượng $tk[0]->tai_khoan_id)
              $request->request->set('nhomDichID', $nhom_dich->id);
              $request->request->set('nhomDichVaiTroID', 1);
              $nhom_dich_tv = NhomDichThanhVienDAO::them($request);

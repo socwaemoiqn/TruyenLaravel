@@ -9,5 +9,4 @@ interface TacGiaInterface{
     public static function getData(); // Lấy toàn bộ record
     public static function getDataById(Request $request); // Lấy 1 record theo id
     public static function search(Request $request); // Tìm kiếm record theo key
-
 }

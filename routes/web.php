@@ -26,20 +26,19 @@ Route::prefix('admin')->group(function () {
     Route::prefix('danh-muc')->group(function () {
         Route::get("/", 'Admin\DanhMucController@danhMucPage');
         Route::get("/search", 'Admin\DanhMucController@search');
-        Route::post("/insert", 'Admin\DanhMucController@them');
-        Route::post("/ajax", 'Admin\DanhMucController@ajax'); // ajax gét dữ liệu lên form sửa danh mục
-        Route::post("/ajax/get", 'Admin\DanhMucController@ajaxGetData');
-        Route::post("/ajax/edit",'Admin\DanhMucController@sua'); // ajax sửa dữ liệu danh mục
-        Route::post("/ajax/delete",'Admin\DanhMucController@xoa'); // ajax xóa dữ liệu danh mục
+        Route::post("/ajax", 'Admin\DanhMucController@ajax'); // ajax gét dữ liệu lên form sửa 
+        Route::post("/insert", 'Admin\DanhMucController@them'); // ajax thêm dữ liệu
+        Route::post("/edit",'Admin\DanhMucController@sua'); // ajax sửa dữ liệu 
+        Route::post("/delete/{id}",'Admin\DanhMucController@xoa'); // ajax xóa dữ liệu 
     });
 
     Route::prefix('the-loai')->group(function () {
         Route::get("/", 'Admin\TheLoaiController@theLoaiPage');
         Route::get("/search", 'Admin\TheLoaiController@search');
-        Route::post("/insert", 'Admin\TheLoaiController@them');
         Route::post("/ajax", 'Admin\TheLoaiController@ajax'); // ajax gét dữ liệu lên form sửa 
-        Route::post("/ajax/edit",'Admin\TheLoaiController@sua'); // ajax sửa dữ liệu 
-        Route::post("/ajax/delete",'Admin\TheLoaiController@xoa'); // ajax xóa dữ liệu 
+        Route::post("/insert", 'Admin\TheLoaiController@them');// ajax thêm dữ liệu
+        Route::post("/edit",'Admin\TheLoaiController@sua'); // ajax sửa dữ liệu 
+        Route::post("/delete/{id}",'Admin\TheLoaiController@xoa'); // ajax xóa dữ liệu 
     });
 
 
@@ -47,7 +46,7 @@ Route::prefix('admin')->group(function () {
         Route::get("/", 'Admin\TacGiaController@tacGiaPage');
         Route::get("/search", 'Admin\TacGiaController@search');
         Route::post("/ajax", 'Admin\TacGiaController@ajax'); // ajax gét dữ liệu lên form sửa 
-        Route::post("/insert", 'Admin\TacGiaController@them')->name("admin/danh-muc/insert"); // ajax thêm dữ liệu
+        Route::post("/insert", 'Admin\TacGiaController@them');// ajax thêm dữ liệu
         Route::post("/edit",'Admin\TacGiaController@sua'); // ajax sửa dữ liệu 
         Route::post("/delete/{id}",'Admin\TacGiaController@xoa'); // ajax xóa dữ liệu 
     });

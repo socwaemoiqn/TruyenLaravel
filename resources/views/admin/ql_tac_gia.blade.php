@@ -1,8 +1,4 @@
 @extends('layout.admin.master')
-@if (session('mess'))
-    <script>alert("{{ session('mess') }}");</script>
-    {{Session::flush()}}
-@endif 
 @section('main')
 <div class="row">
     <div class="col-lg-12">
@@ -15,7 +11,24 @@
                     @endforeach
                 </ul>
             </div>
-            @endif
+        @endif
+        @if (session('mess'))
+             <div class="alert alert-success">
+                <ul>
+                        <li>{{ session('mess')['status'] }}</li>
+                        <li>{{ session('mess')['name'] }}</li>
+                </ul>
+            </div>
+        @endif
+        @if (session('search'))
+        <div class="alert alert-info">
+           <ul>
+                   <li>{{ session('search')['status'] }}</li>
+                   <li>{{ session('search')['count'] }}</li>
+           </ul>
+       </div>
+       {{Session::forget('search')}}
+         @endif
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -32,14 +45,19 @@
                             <tr>
                             <form action="{{url('admin/tac-gia/search')}}" method="get">
                                 <td><input class="form-control" type="text"
-                                    placeholder="Nhập nội dung tìm kiếm" name="key"></td>
-                                <td><input class="btn btn-default" type="submit"
-                                    value="Tìm kiếm"></td>
+                                placeholder="Nhập nội dung tìm kiếm" name="key"@isset($key) value="{{$key}}"@endisset></td>
+                                <td><input class="btn btn-primary" type="submit"
+                                value="Tìm kiếm"> <a href="{{url('admin/tac-gia')}}" class="btn btn-default">Trở lại</a>
+                                </td>
                                 </form>
+                                <td>
+                                </td>
                                 <td><a
-                                    href="${pageContext.request.contextPath}/quan-tri/ql_TacGia_truyen/them"
+                                    href=""
                                     class="btn btn-primary" data-toggle="modal"
-                                    data-target="#themmoi">Thêm Mới</a></td>
+                                    data-target="#themmoi">Thêm Mới</a>
+                                </td>
+                              
                             </tr>
                         </tbody>
                     </table>
@@ -70,15 +88,15 @@
                                         @endif
                                     </td>
                                     <td class="center">
+                                     <form id="form{{$item->id}}" action="{{url('admin/tac-gia/delete/'.$item->id)}}" method="post">
                                         <a class="btn btn-primary btn-circle" title="Tất cả truyện" >
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
                                     <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa tác giả">
                                             <i class="fa  fa-edit"></i>
-                                        </a>
-                                    <form id="form{{$item->id}}" action="{{url('admin/tac-gia/delete/'.$item->id)}}" method="post">
-                                        <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa tác giả" >
-                                            <i class="fa fa-close"></i></a></td>
+                                        </a> <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa tác giả" >
+                                            <i class="fa fa-close"></i></a>
+                                    </td>
                                     </form>
                                    
                                 </tr>
@@ -112,7 +130,7 @@
                             <form action="{{url('admin/tac-gia/insert')}}"method="post">
                                 <div class="form-group">
                                     <label>Tên tác giả </label> <input class="form-control"
-                                name="ten_tac_gia" id="tenTacGia" placeholder="Nhập tên tác giả truyện">
+                                name="ten_tac_gia" id="ten_tac_gia" placeholder="Nhập tên tác giả truyện">
                                 </div>
                                 <div class="form-group">
                                     <label>Giới thiệu</label> 
@@ -154,7 +172,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Tên tác giả</label> <input class="form-control"
-                                    name="ten_tac_gia"  id="tenTacGia" placeholder="Nhập tên tác giả">
+                                    name="ten_tac_gia"  id="ten_tac_gia" placeholder="Nhập tên tác giả">
                                 </div>
                                 <div class="form-group">
                                     <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
@@ -186,6 +204,10 @@
 @endsection
 @section('js')
 <script>
+    window.onload = function() {
+    
+        $("input[name=key]").focus();
+    };
     $(document).ready(function(){
     // Sự kiện get dữ liệu khi click button sửa
      $(document).on('click','a.btn-sua',function(){
@@ -205,17 +227,16 @@
               },
               success: function(data)
               {
-                   $.each(data,function(key,item){
-                        $("#sua #id").val(item['id']);
-                       $("#sua #tenTacGia").val(item['ten_tac_gia']);
-                       CKEDITOR.instances.gioiThieu2.setData(item['gioi_thieu']);
-                       if(item["trang_thai"] == 1)
+                        $("#sua #id").val(data.id);
+                       $("#sua #ten_tac_gia").val(data.ten_tac_gia);
+                       CKEDITOR.instances.gioiThieu2.setData(data.gioi_thieu);
+                       if(data.trang_thai == 1)
                        {
                          $("#trangThai1").prop("checked",true);
                        }
                        else
                          $("#trangThai0").prop("checked",true);
-                   });
+              
               },
               error: function(error)
               {

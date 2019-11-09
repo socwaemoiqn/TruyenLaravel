@@ -32,16 +32,12 @@ class TacGiaDAO implements TacGiaInterface{
         return TacGia::paginate(TacGiaDao::$limit);
     }
     public static function getDataById(Request $request){
-        return TacGia::where('id',$request->id)->get();
+        return TacGia::find($request->id);
     }
     public static function search(Request $request){
-        if($request->key != "")
-        {
             $data = TacGia::where(TacGiaDAO::$ten_tac_gia,'like','%'.$request->key.'%')->paginate(TacGiaDAO::$limit);
             $data->withPath(TacGiaDAO::$url.'/search?key='.$request->key);
+            $request->request->set('count',TacGia::where(TacGiaDAO::$ten_tac_gia,'like','%'.$request->key.'%')->count());
             return $data;
-        } 
-        else
-            return TacGiaDAO::getData();
     }
 }
