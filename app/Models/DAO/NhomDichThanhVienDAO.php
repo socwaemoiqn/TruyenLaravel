@@ -12,17 +12,14 @@ class NhomDichThanhVienDAO implements NhomDichThanhVienInterface{
                     ->join('tb_tai_khoan','tb_tai_khoan.id','=','tb_nhom_dich_thanh_vien.tai_khoan_id')
                     ->join('tb_nhom_dich_vai_tro','tb_nhom_dich_vai_tro.id','=','tb_nhom_dich_thanh_vien.nhom_dich_vai_tro_id')
                     ->select('tb_nhom_dich_thanh_vien.*','tb_nhom_dich.ten_nhom_dich','tb_nhom_dich_vai_tro.ten_vai_tro','tb_tai_khoan.ten_tai_khoan')
-                    ->get();
+                    ->paginate(5);
                     return $data;;
-    }
-    public static function checkExist(Request $request){
-    
     }
     public static function them(Request $request){
         $nhom_dich_tv = new NhomDichThanhVien;
-        $nhom_dich_tv->tai_khoan_id = 6; // xem lỗi ở đây
-        $nhom_dich_tv->nhom_dich_id = $request->nhomDichID;
-        $nhom_dich_tv->nhom_dich_vai_tro_id = $request->nhomDichVaiTroID;
+        $nhom_dich_tv->tai_khoan_id = $request->tai_khoan_id;
+        $nhom_dich_tv->nhom_dich_id = $request->nhom_dich_id;
+        $nhom_dich_tv->nhom_dich_vai_tro_id = $request->nhom_dich_vai_tro_id;
         $nhom_dich_tv->trang_thai = 1; 
         $nhom_dich_tv->save();
         return $nhom_dich_tv;
@@ -38,5 +35,9 @@ class NhomDichThanhVienDAO implements NhomDichThanhVienInterface{
     }
     public static function search(Request $request){
      
+    }
+    public static function updateTrangThai(Request $request)
+    {
+      
     }
 }

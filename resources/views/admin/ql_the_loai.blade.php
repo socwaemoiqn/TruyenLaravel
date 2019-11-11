@@ -1,21 +1,8 @@
 @extends('layout.admin.master')
-@if (session('mess'))
-    <script>alert("{{ session('mess') }}");</script>
-    {{Session::flush()}}
-@endif 
 @section('main')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Quản lý thể loại</h1>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
+        <h1 class="page-header">Quản lý Thể Loại</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -23,30 +10,89 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading"></div>
+            <div class="panel-heading">
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            @if (session('mess'))
+                 <div class="alert alert-success">
+                    <ul>
+                            <li>{{ session('mess')['status'] }}</li>
+                            <li>{{ session('mess')['name'] }}</li>
+                    </ul>
+                </div>
+            @endif
+            @if (session('search'))
+            <div class="alert alert-info">
+               <ul>
+                       <li>{{ session('search')['status'] }}</li>
+                       <li>{{ session('search')['count'] }}</li>
+               </ul>
+           </div>
+           {{Session::forget('search')}}
+             @endif
+            </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="table-responsive">
+                        
                     <table class="table table-striped table-bordered table-hover" border="0">
                         <tbody>
                             <tr>
                             <form action="{{url('admin/the-loai/search')}}" method="get">
+                                <td> <a href="{{url('admin/the-loai')}}" class="btn btn-warning" title="Trở lại">
+                                    <i class="fa  fa-arrow-left fa-1x"></i></a></td>
                                 <td><input class="form-control" type="text"
-                                    placeholder="Nhập nội dung tìm kiếm" name="key"></td>
-                                <td><input class="btn btn-default" type="submit"
-                                    value="Tìm kiếm"></td>
+                                placeholder="Nhập nội dung tìm kiếm" name="key"@isset($key) value="{{$key}}"@endisset></td>
+                                <td><input class="btn btn-primary" type="submit"
+                                value="Tìm kiếm">
+                                </td>
                                 </form>
                                 <td><a
                                     href=""
                                     class="btn btn-primary" data-toggle="modal"
-                                    data-target="#themmoi">Thêm Mới</a></td>
+                                    data-target="#themmoi">Thêm Mới</a>
+                                </td>
+                                <td><label
+                                    class="btn btn-primary" id="btn-all">Chọn tất cả </label>
+                                {{-- <a
+                                    class="btn btn-success" id="btn-enable" disabled>Kích hoạt</a>
+                                    <a
+                                    class="btn btn-warning" id="btn-disable" disabled>Vô hiệu</a>
+                                    <a
+                                    class="btn btn-danger"  id="btn-delete" disabled>Xóa</a> --}}
+                                  
+                                </td>
+                                <td>  
+                                <form action="{{url('admin/the-loai/select-all')}}" method="Post">
+                                        <input type="hidden" name="array_id" value="">
+                                        <select id="select-all" class="form-control" disabled>
+                                            <option value="">Tùy chọn</option>
+                                            <option value="enable">Kích hoạt</option>
+                                            <option value="disable">Vô hiệu</option>
+                                            <option value="delete">Xoá</option>
+                                        </select>
+                                </form>
+                                    
+                            </td>
+                                <td><label
+                                    class="btn btn-danger" disabled >Hiện có: {{$data->total()}} thể loại </label>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table table-striped table-bordered table-hover table-danh-muc"
+                  
+                    <table class="table table-striped table-bordered table-hover"
                         id="dataTables-example ">
                         <thead>
                             <tr>
+                                    <th class="text-center">Chọn</th>
                                 <th id="btn1">STT</th>
                                 <th>ID thể loại</th>
                                 <th>Tên thể loại</th>
@@ -58,15 +104,16 @@
                         <tbody>
                             @foreach ($data as $item)
                                 <tr class="odd gradeX">
+                                <td class="text-center"><input type="checkbox" name="" id="{{$item->id}}"></td>
                                 <td scope="row">{{$loop->index+1}}</td>
                                     <td>{{$item->id}}</td>
                                     <td>{{$item->ten_the_loai}}</td>
                                     <td class="center">4</td>
                                     <td class="center">
                                         @if ($item->trang_thai == 1)
-                                                {{$item->trang_thai = 'Enable'}}
+                                                {{$item->trang_thai = 'Kích hoạt'}}
                                         @else
-                                                {{$item->trang_thai = 'Disable'}}
+                                                {{$item->trang_thai = 'Vô hiệu'}}
                                         @endif
                                     </td>
                                     <td class="center">
@@ -75,9 +122,9 @@
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
                                     <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa thể loại">
-                                            <i class="fa  fa-edit"></i>
-                                        </a> <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa thể loại" >
-                                            <i class="fa fa-close"></i></a>
+                                            <i class="fa  fa-edit"></i></a>
+                                         <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa thể loại" >
+                                            <i class="fa fa-close"></i></a>     
                                     </td>
                                     </form>
                                    
@@ -87,8 +134,9 @@
                     
                         </tbody>
                     </table>
-                    {{ $data->links() }}
+                   
                 </div>
+                <div class="col text-center">{{ $data->links() }} </div>  
             </div>
             <!-- /.panel-body -->
         </div>
@@ -135,7 +183,7 @@
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="col-lg-12">
-            <div class="panel panel-green">
+            <div class="panel panel-green ">
 
                 <div class="panel-heading">
                     <h4>Sửa thể loại</h4>
@@ -186,66 +234,230 @@
 @endsection
 @section('js')
 <script>
+    window.onload = function() {
+    
+        $("input[name=key]").focus();
+    };
     $(document).ready(function(){
-    // Sự kiện get dữ liệu khi click button sửa
-     $(document).on('click','a.btn-sua',function(){
-          let id =  $(this).attr('id');
-          $.ajaxSetup({
-               headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               }
-           });
-           $.ajax({
-              url: "admin/the-loai/ajax",
-              cache: false,
-              type: "Post",
-              dataType: "json",
-              data: {
-                  id: id
-              },
-              success: function(data)
-              {
-                   $.each(data,function(key,item){
-                        $("#sua #id").val(item['id']);
-                       $("#sua #ten_the_loai").val(item['ten_the_loai']);
-                       CKEDITOR.instances.gioiThieu2.setData(item['gioi_thieu']);
-                       if(item["trang_thai"] == 1)
-                       {
-                         $("#trangThai1").prop("checked",true);
-                       }
-                       else
-                         $("#trangThai0").prop("checked",true);
-                   });
-              },
-              error: function(error)
-              {
+        // Sự kiện get dữ liệu khi click button sửa
+        $(document).on('click','a.btn-sua',function(){
+            let id =  $(this).attr('id');
+            $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "admin/the-loai/ajax",
+                cache: false,
+                type: "Post",
+                dataType: "json",
+                data: {
+                    id: id
+                },
+                success: function(data)
+                {
+                            $("#sua #id").val(data.id);
+                        $("#sua #ten_the_loai").val(data.ten_the_loai);
+                        CKEDITOR.instances.gioiThieu2.setData(data.gioi_thieu);
+                        if(data.trang_thai == 1)
+                        {
+                            $("#trangThai1").prop("checked",true);
+                        }
+                        else
+                            $("#trangThai0").prop("checked",true);
+                
+                },
+                error: function(error)
+                {
 
-              } 
-           });
-     });
-      // Sự kiện xóa dữ liệu
-     $(document).on('click','a.btn-xoa',function(e){
-        let id = $(this).attr('id');
-        $.confirm({
-        title: 'Cảnh báo!',
-        content: 'Xác nhận xóa thể loại này?',
-        buttons: {
-                    confirm: {
-                    text: 'Xác nhận',
-                    btnClass: 'btn-blue',
-                    keys: ['enter'],
-                    action: function(){
-                        $('#form'+id).submit();
-                    }
-                    },
-                    cancel: {
-                        text: 'Trở lại',
-                        keys: ['esc'],
-                        action: function(){}
-                    }
-                    }
-                });
-            });   
-        });                    
+                } 
+            });
+        });
+
+        // Sự kiện xóa dữ liệu
+        $(document).on('click','a.btn-xoa',function(){
+            let id = $(this).attr('id');
+            $.confirm({
+            title: 'Cảnh báo!',
+            content: 'Xác nhận xóa thể loại này?',
+            buttons: {
+                        confirm: {
+                        text: 'Xác nhận',
+                        btnClass: 'btn-blue',
+                        keys: ['enter'],
+                        action: function(){
+                            $('#form'+id).submit();
+                      
+                        }
+                        },
+                        cancel: {
+                            text: 'Trở lại',
+                            keys: ['esc'],
+                            action: function(){
+                            }
+                        }
+                        }
+                    });
+        });  
+        // Var checkbox
+        var array_checkbox = $("input[type=checkbox]"); // Mảng các control checkbox
+        var array_value_checkbox = new Array(); // Mảng các id của thể loại
+        var array_button = ['select-all']; // Mảng các control button
+        // Xử lí sự kiện khi click vào 1 checkbox
+        $(document).on('click','input[type=checkbox]',function(){
+            let id = $(this).attr('id');   // Lấy id của tac giả được  check
+            if(ClickCheckbox(this,array_checkbox,array_value_checkbox,array_button)) // Nếu checkbox được check
+            {
+                array_value_checkbox.push(id); // Thêm id của thể loại vào arrray
+                
+            }
+            else
+            {
+                var index_checkbox_unchecked = array_value_checkbox.indexOf(id); // Tìm index của id thể loại trong array
+                array_value_checkbox.splice(index_checkbox_unchecked,1); // Xóa id của thể loại trong arrray theo index
+            } 
+
+        });
+        // Xử lí sự kiên khi click vào Button Chọn tất cả 
+        $("#btn-all").click(()=>{
+            CheckAll(array_checkbox,array_value_checkbox,array_button); // Check all checkbox
+           
+        });
+
+        // Xử lí sự kiện khi chọn 1 action trong select box
+        $("#select-all").change(()=>{
+            let value = $('#select-all').val();
+            $.confirm({
+            title: 'Thông báo!',
+            content: 'Bạn chắc chắn thực hiện thao tác này?',
+            buttons: {
+                        confirm: {
+                        text: 'Xác nhận',
+                        btnClass: 'btn-blue',
+                        keys: ['enter'],
+                        action: function(){
+                            if(value == "delete")
+                            {
+                                $.confirm({
+                                title: 'Cảnh báo!',
+                                content: 'Đây là hành động xóa dữ liệu. Dữ liệu sẽ mất vĩnh viễn. Bạn chắc chắn muốn xóa?',
+                                buttons: {
+                                            confirm: {
+                                            text: 'Xác nhận',
+                                            btnClass: 'btn-red',
+                                            keys: ['enter'],
+                                            action: function(){
+                                                let url = $("#select-all").parent().attr('action')+"/"+value;
+                                                var json = JSON.stringify(array_value_checkbox);
+                                                $("input[name=array_id]").val(json);
+                                                $("#select-all").parent().attr("action",url);
+                                                $("#select-all").parent().submit();
+                                            }
+                                            },
+                                            cancel: {
+                                                text: 'Trở lại',
+                                                keys: ['esc'],
+                                                action: function(){
+                                                    $("#select-all").val("");
+                                                }
+                                            }
+                                            }
+                                        });
+                            }
+                            else
+                            {
+                                let url = $("#select-all").parent().attr('action')+"/"+value;
+                                var json = JSON.stringify(array_value_checkbox);
+                                $("input[name=array_id]").val(json);
+                                $("#select-all").parent().attr("action",url);
+                                $("#select-all").parent().submit();
+                            }
+                           
+                            
+                        }
+                        },
+                        cancel: {
+                            text: 'Trở lại',
+                            keys: ['esc'],
+                            action: function(){
+                                $("#select-all").val("");
+                            }
+                        }
+                        }
+                    });
+
+
+
+
+            
+            
+        });
+
+    });      
+    ClickCheckbox = (e,array_checkbox,array_value_checkbox,array_button) =>{
+        if(e.checked) // Nếu checkbox được checked
+        {
+            EnableButton(array_button); // Enable các button
+            $("#btn-all").html('Hủy');// Đổi tên hiển thị của button
+            return true; 
+        }
+        else // Nếu checkbox được unchecked
+        {
+            if(!CheckArrayChecked(array_checkbox)) // Kiểm tra xem nếu tất cả checkbox đã được uncheck
+            {   
+                DisableButton(array_button); // Disable các button
+                $("#btn-all").html('Chọn tất cả');// Đổi tên hiển thị của button
+            }
+            return false;              
+        }
+    }
+    CheckArrayChecked = (array_checkbox) => {
+       for(let i = 0; i < array_checkbox.length; i++) // Duyệt mảng các control checkbox
+       {
+           if(array_checkbox[i].checked) return true; // Nếu có 1 checkbox được chọn thì trả về true
+       }
+        return false; // Nếu ko có checkbox nào ddc chọn hết thì về false   
+    }    
+    CheckAll = (array_checkbox,array_value_checkbox,array_button) => {
+        if(array_value_checkbox.length > 0) // Nếu mảng khác rỗng, tức là đã chọn tất cả 
+        {
+            for(let i = 0; i < array_checkbox.length; i++) // Duyệt mảng các control checkbox
+            {
+                array_checkbox[i].checked = false; // Gán về false (Gỡ check)
+                var index_checkbox_unchecked = array_value_checkbox.indexOf(array_checkbox[i].getAttribute("id")); // Tìm index của id thể loại trong array 
+                array_value_checkbox.splice(index_checkbox_unchecked,1); // Xóa id của thể loại trong arrray theo index
+                $("#btn-all").html('Chọn tất cả'); // Đổi tên hiển thị của button 
+            }
+            DisableButton(array_button);
+        }
+        else // Nếu mảng rỗng , tức là chưa chọn gì hết
+        {
+            for(let i = 0; i < array_checkbox.length; i++)// Duyệt mảng các control checkbox
+            {
+                array_value_checkbox.push(array_checkbox[i].getAttribute("id")); // Thêm id của thể loại vào arrray
+                
+                array_checkbox[i].checked = true;  // Gán về true (check)
+            }
+            EnableButton(array_button);
+            $("#btn-all").html('Hủy');// Đổi tên hiển thị của button
+        }
+    }
+    DisableButton = (array_button) => {
+        for (let index = 0; index < array_button.length; index++) { // Duyệt mảng các button
+            $("#"+array_button[index]).attr('disabled','true'); // Enable button
+        }
+    }
+    EnableButton = (array_button) => {
+        for (let index = 0; index < array_button.length; index++) { // Duyệt mảng các button
+            $("#"+array_button[index]).removeAttr('disabled'); // Disable button
+        }
+    }   
+    // Hàm dùng để in mảng lên console
+    ShowArray = (array) => {
+        for (let index = 0; index < array.length; index++) {
+            console.log(array[index]);    
+        }
+    }
 </script>
 @endsection

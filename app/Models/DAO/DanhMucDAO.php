@@ -5,9 +5,9 @@ use App\Models\DanhMuc;
 use Illuminate\Http\Request;
 
 class DanhMucDAO implements DanhMucInterface{
-    private static $limit = 10;
+    private static $limit = 5;
     private static $ten_danh_muc = 'ten_danh_muc';
-    private static $url = 'admin/danh-muc';
+    public static $url = 'admin/danh-muc';
     public static function them(Request $request){
         $danh_muc = new DanhMuc;
         $danh_muc->ten_danh_muc = $request->ten_danh_muc;
@@ -32,16 +32,16 @@ class DanhMucDAO implements DanhMucInterface{
         return DanhMuc::paginate(DanhMucDao::$limit);
     }
     public static function getDataById(Request $request){
-        return DanhMuc::where('id',$request->id)->get();
+        return DanhMuc::find($request->id);
     }
     public static function search(Request $request){
-        if($request->key != "")
-        {
-            $data = DanhMuc::where(DanhMucDAO::$ten_danh_muc,'like','%'.$request->key.'%')->paginate(DanhMucDAO::$limit);
-            $data->withPath(DanhMucDAO::$url.'/search?key='.$request->key);
-            return $data;
-        } 
-        else
-            return DanhMucDAO::getData();
+        return DanhMuc::where(DanhMucDAO::$ten_danh_muc,'like','%'.$request->key.'%')->paginate(DanhMucDAO::$limit);
+    }
+    public static function updateTrangThai(Request $request)
+    {
+        $danh_muc = DanhMuc::find($request->id);
+        $danh_muc->trang_thai = $request->trang_thai;
+        $danh_muc->save();
+        return $danh_muc;
     }
 }

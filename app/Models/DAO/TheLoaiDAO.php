@@ -5,9 +5,9 @@ use App\Models\TheLoai;
 use Illuminate\Http\Request;
 
 class TheLoaiDAO implements TheLoaiInterface{
-    private static $limit = 10;
+    private static $limit = 5;
     private static $ten_the_loai = 'ten_the_loai';
-    private static $url = 'admin/the-loai';
+    public static $url = 'admin/the-loai';
     public static function them(Request $request){
         $the_loai = new TheLoai;
         $the_loai->ten_the_loai = $request->ten_the_loai;
@@ -32,16 +32,16 @@ class TheLoaiDAO implements TheLoaiInterface{
         return TheLoai::paginate(TheLoaiDao::$limit);
     }
     public static function getDataById(Request $request){
-        return TheLoai::where('id',$request->id)->get();
+        return TheLoai::find($request->id);
     }
     public static function search(Request $request){
-        if($request->key != "")
-        {
-            $data = TheLoai::where(TheLoaiDAO::$ten_the_loai,'like','%'.$request->key.'%')->paginate(TheLoaiDAO::$limit);
-            $data->withPath(TheLoaiDAO::$url.'/search?key='.$request->key);
-            return $data;
-        } 
-        else
-            return TheLoaiDAO::getData();
+        return TheLoai::where(TheLoaiDAO::$ten_the_loai,'like','%'.$request->key.'%')->paginate(TheLoaiDAO::$limit);
+    }
+    public static function updateTrangThai(Request $request)
+    {
+        $the_loai = TheLoai::find($request->id);
+        $the_loai->trang_thai = $request->trang_thai;
+        $the_loai->save();
+        return $the_loai;
     }
 }
