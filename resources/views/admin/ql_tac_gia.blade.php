@@ -359,7 +359,7 @@
                                                 text: 'Trở lại',
                                                 keys: ['esc'],
                                                 action: function(){
-                                                    
+                                                    $("#select-all").val("");
                                                 }
                                             }
                                             }
@@ -381,6 +381,7 @@
                             text: 'Trở lại',
                             keys: ['esc'],
                             action: function(){
+                                $("#select-all").val("");
                             }
                         }
                         }

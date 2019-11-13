@@ -29,11 +29,8 @@ class TacGiaController extends BaseController
     public function xoa(Request $request)
     {  
         $tac_gia = TacGiaDAO::getDataById($request);
-        if(TacGiaDAO::xoa($request))
-            $mess = "Xóa tác giả thành công!";
-        else      
-            $mess = "Xóa tác giả không thành công!"; 
-            $request->session()->flash('mess', ['status'=>"Xóa tác giả thành công",'name'=>'Tác giả vừa được xoá: '. $tac_gia->ten_tac_gia]);
+        $tac_gia->delete();
+        $request->session()->flash('mess', ['status'=>"Xóa tác giả thành công",'name'=>'Tác giả vừa được xoá: '. $tac_gia->ten_tac_gia]);
         return redirect()->back();
        
     }

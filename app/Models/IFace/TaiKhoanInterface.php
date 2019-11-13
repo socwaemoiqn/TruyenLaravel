@@ -6,5 +6,6 @@ interface TaiKhoanInterface{
     public static function login(Request $request); // Xử lí đăng nhập
     public static function logup(Request $request); // Xử lí đăng ký
     public static function them(Request $request); // Thêm 1 record
-    public static function getDataByUserName($tenTaiKhoan);
+    public static function getDataByUserName(Request $request);
+    public static function getDataById(Request $request);
 }

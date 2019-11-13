@@ -16,7 +16,6 @@ class CreateTruyenChuongsTable extends Migration
         Schema::create('tb_truyen_chuong', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('truyen_id');
-            $table->integer('nhom_dich_id');
             $table->integer('nhom_dich_thanh_vien_id');
             $table->integer('thu_tu_chuong');
             $table->string('ten_chuong');

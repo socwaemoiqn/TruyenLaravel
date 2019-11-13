@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\DAO\NhomDichDAO;
 use App\Models\DAO\TaiKhoanDAO;
-use App\Models\DAO\NhomDichThanhVienDAO;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 
 class NhomDichController extends BaseController
@@ -14,28 +14,26 @@ class NhomDichController extends BaseController
         return view('admin.ql_nhom_dich')->with('data',$data);
     }
     public function them(Request $request){
-        if(!NhomDichDAO::checkExist($request))
-        {
-             $nhom_dich = NhomDichDAO::them($request);
-
-             $tai_khoan_id = TaiKhoanDAO::getDataByUserName($request->tenTaiKhoan);
-             $request->request->set('taiKhoanID', $tai_khoan_id); // xem lại ở đây là trả về 1 mảng các đổi tượng $tk[0]->tai_khoan_id)
-             $request->request->set('nhomDichID', $nhom_dich->id);
-             $request->request->set('nhomDichVaiTroID', 1);
-             $nhom_dich_tv = NhomDichThanhVienDAO::them($request);
-            session(['mess'=>'Thêm nhóm dịch thành công!']);
-        }
-        else
-            session(['mess'=>'Thêm nhóm dịch không thành công!']);
-        return redirect('admin/nhom-dich');
+        $ten_nhom_dich = 'ten_nhom_dich';
+            $validator = Validator::make($request->all(),
+            [
+                $ten_nhom_dich => 'unique:tb_nhom_dich|required|max:50',
+            ],[
+                $ten_nhom_dich.'.unique'=> 'Tên nhóm dịch đã tồn tại',
+                $ten_nhom_dich.'.required'=> 'Tên nhóm dịch không được để trống',
+                $ten_nhom_dich.'.max' => 'Tên nhóm dịch có độ dài tối đa 50 ký tự'
+            ])->validate();
+             $nhom_dich= NhomDichDAO::them($request);
+             $request->session()->flash('mess', ['status'=>"Thêm nhóm dịch thành công",'name'=>'Nhóm dịch vừa được thêm: '.$nhom_dich->ten_nhom_dich]);
+         return redirect()->back();
     }
     public function xoa(Request $request)
-    {
-        if(NhomDichDAO::xoa($request))
-            $mess = "Xóa nhóm dịch thành công!";
-        else      
-            $mess = "Xóa nhóm dịch không thành công!"; 
-         return $mess;
+    {  
+        $nhom_dich = NhomDichDAO::getDataById($request);
+        $nhom_dich->delete();
+        $request->session()->flash('mess', ['status'=>"Xóa nhóm dịch thành công",'name'=>'Nhóm dịch vừa được xoá: '. $nhom_dich->ten_nhom_dich]);
+        return redirect()->back();
+       
     }
     public function ajax(Request $request)
     {
@@ -43,15 +41,63 @@ class NhomDichController extends BaseController
     }
     public function sua(Request $request)
     {
-        if(NhomDichDAO::sua($request))
-            $mess = "Sửa nhóm dịch thành công!";
-        else      
-            $mess = "Sửa nhóm dịch không thành công!"; 
-         return $mess;
+        $ten_nhom_dich = 'ten_nhom_dich';
+            $validator = Validator::make($request->all(),
+            [
+                $ten_nhom_dich => 'required|max:50'
+            ],[
+                $ten_nhom_dich.'.required'=> 'Tên nhóm dịch không được để trống',
+                $ten_nhom_dich.'.max' => 'Tên nhóm dịch có độ dài tối đa 50 ký tự'
+            ])->validate();
+             $nhom_dich= NhomDichDAO::sua($request);
+             $request->session()->flash('mess', ['status'=>"Sửa nhóm dịch thành công",'name'=>'Nhóm dịch vừa được sửa: '.$nhom_dich->ten_nhom_dich]);
+        return redirect()->back();
     }
     public function search(Request $request)
     {
-         $data = NhomDichDAO::search($request);
-         return view('admin.ql_nhom_dich')->with('data',$data); 
+        if($request->key)
+        {
+            $data = NhomDichDAO::search($request);
+            $data->withPath(NhomDichDAO::$url.'/search?key='.$request->key);
+            $request->session()->flash('search', ['status'=>"Tìm kiếm thành công",'count'=>'Tìm được: '. $data->total().' kết quả']);
+            return view('admin.ql_nhom_dich')->with('data',$data)
+                                            ->with('key',$request->key); 
+        }
+        else
+            return redirect('admin/nhom-dich');
+      
+    }
+    public function selectAll(Request $request)
+    {  
+        $array_action = array('enable','disable','delete'); // Mảng các thao tác
+        $array = json_decode($request->array_id); // Chuyển chuổi json thành mảng các id
+        switch ($request->action) {
+            case $array_action[0]: // Nếu là action enable
+                $request->request->set('trang_thai',1); // Đưa trang thái về 1
+                foreach($array as $id){
+                    $request->request->set('id',$id);
+                    $nhom_dich = NhomDichDAO::updateTrangThai($request); 
+                }
+                $request->session()->flash('mess', ['status'=>"Thao tác thành công",'name'=>'Kích hoạt '.count($array).' nhóm dịch!']   );
+                break;
+            case $array_action[1]: // Nếu là action disable
+                $request->request->set('trang_thai',0); // Đưa trang thái về 0
+                foreach($array as $id){
+                    $request->request->set('id',$id);
+                    $nhom_dich = NhomDichDAO::updateTrangThai($request);
+                 }
+                 $request->session()->flash('mess', ['status'=>"Thao tác thành công",'name'=>'Vô hiệu hóa '.count($array).' nhóm dịch!']   );
+                break;
+            case $array_action[2]: // Nếu là action delete
+                    foreach($array as $id){
+                        $request->request->set('id',$id);
+                        $nhom_dich = NhomDichDAO::xoa($request);
+                     }
+                    $request->session()->flash('mess', ['status'=>"Thao tác thành công",'name'=>'Đã xóa '.count($array).' nhóm dịch!']   );
+                    break;       
+            default:
+                break;
+        }
+        return redirect()->back();
     }
 }

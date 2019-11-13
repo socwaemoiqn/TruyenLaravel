@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTruyenNhomDichesTable extends Migration
+class AddAttributeTbTruyen extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateTruyenNhomDichesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_truyen_nhom_dich', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('truyen_id');
+        Schema::table('tb_truyen', function (Blueprint $table) {
             $table->integer('nhom_dich_id');
-            $table->timestamps();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateTruyenNhomDichesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('truyen_nhom_diches');
+        Schema::table('tb_truyen', function (Blueprint $table) {
+            //
+        });
     }
 }

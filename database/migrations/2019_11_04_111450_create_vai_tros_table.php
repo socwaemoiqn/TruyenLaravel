@@ -13,9 +13,11 @@ class CreateVaiTrosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tb_vai_tro', function (Blueprint $table) {
+        Schema::create('tb_tai_khoan_vai_tro', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ten_vai_tro')->nullable();
+            $table->string('ten_vai_tro');
+            $table->text('gioi_thieu')->nullable();
+            $table->integer('trang_thai');
             $table->timestamps();
         });
     }

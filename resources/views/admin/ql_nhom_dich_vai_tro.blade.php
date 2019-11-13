@@ -2,7 +2,7 @@
 @section('main')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Quản lý  Thành Viên Nhóm Dịch</h1>
+        <h1 class="page-header">Quản lý vai trò thành viên nhóm dịch</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -45,11 +45,11 @@
                     <table class="table table-striped table-bordered table-hover" border="0">
                         <tbody>
                             <tr>
-                            <form action="{{url('admin/nhom-dich/thanh-vien/search')}}" method="get">
-                                <td> <a href="{{url('admin/nhom-dich/thanh-vien')}}" class="btn btn-warning" title="Trở lại">
+                            <form action="{{url('admin/nhom-dich/vai-tro/search')}}" method="get">
+                                <td> <a href="{{url('admin/nhom-dich/vai-tro')}}" class="btn btn-warning" title="Trở lại">
                                     <i class="fa  fa-arrow-left fa-1x"></i></a></td>
-                                <td><input class="form-control" type="text" 
-                                placeholder="Nhập tên nhóm dịch để tìm kiếm các thành viên" name="key"@isset($key) value="{{$key}}"@endisset></td>
+                                <td><input class="form-control" type="text"
+                                placeholder="Nhập tên vai trò" name="key"@isset($key) value="{{$key}}"@endisset></td>
                                 <td><input class="btn btn-primary" type="submit"
                                 value="Tìm kiếm">
                                 </td>
@@ -70,19 +70,19 @@
                                   
                                 </td>
                                 <td>  
-                                <form action="{{url('admin/nhom-dich/thanh-vien/select-all')}}" method="Post">
+                                <form action="{{url('admin/nhom-dich/vai-tro/select-all')}}" method="Post">
                                         <input type="hidden" name="array_id" value="">
                                         <select id="select-all" class="form-control" disabled>
                                             <option value="">Tùy chọn</option>
                                             <option value="enable">Kích hoạt</option>
                                             <option value="disable">Vô hiệu</option>
-                                            <option value="delete">Xoá</option>
+                                            
                                         </select>
                                 </form>
                                     
                             </td>
                                 <td><label
-                                    class="btn btn-danger" disabled >Hiện có: {{$data->total()}} thành viên nhóm dịch </label>
+                                    class="btn btn-danger" disabled >Hiện có: {{$data->total()}} vai trò </label>
                                 </td>
                             </tr>
                         </tbody>
@@ -92,12 +92,11 @@
                         id="dataTables-example ">
                         <thead>
                             <tr>
-                                <th class="text-center">Chọn</th>
+                                    <th class="text-center">Chọn</th>
                                 <th id="btn1">STT</th>
-                                <th>Tên tài khoản</th>
-                                <th>Tên nhóm dịch</th>
-                                <th>Vai trò</th>
-                                <th>Trạng thái</th>
+                                <th>ID vai trò</th>
+                                <th>Tên vai trò</th>
+                                <th>Trạng Thái</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -106,8 +105,7 @@
                                 <tr class="odd gradeX">
                                 <td class="text-center"><input type="checkbox" name="" id="{{$item->id}}"></td>
                                 <td scope="row">{{$loop->index+1}}</td>
-                                    <td>{{$item->ten_tai_khoan}}</td>
-                                    <td>{{$item->ten_nhom_dich}}</td>
+                                    <td>{{$item->id}}</td>
                                     <td>{{$item->ten_vai_tro}}</td>
                                     <td class="center">
                                         @if ($item->trang_thai == 1)
@@ -117,14 +115,14 @@
                                         @endif
                                     </td>
                                     <td class="center">
-                                     <form id="form{{$item->id}}" action="{{url('admin/nhom-dich/thanh-vien/delete/'.$item->id)}}" method="post">
+                                     <form id="form{{$item->id}}" action="{{url('admin/nhom-dich/vai-tro/delete/'.$item->id)}}" method="post">
                                         <a class="btn btn-primary btn-circle" title="Tất cả truyện" >
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
-                                    <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa thành viên nhóm dịch">
+                                    <a data-toggle="modal" id="{{$item->id}}" data-target="#sua" class="btn btn-success btn-circle btn-sua" title="Chỉnh sửa vai trò">
                                             <i class="fa  fa-edit"></i></a>
-                                         <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa thành viên nhóm dịch" >
-                                            <i class="fa fa-close"></i></a>     
+                                         <!-- <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa vai trò" >
+                                            <i class="fa fa-close"></i></a>      -->
                                     </td>
                                     </form>
                                    
@@ -151,25 +149,24 @@
             <div class="panel panel-green">
 
                 <div class="panel-heading">
-                    <h4>Thêm thành viên nhóm dịch mới</h4>
+                    <h4>Thêm vai trò mới</h4>
                 </div>
                 <div class="panel-body">
-                    <h4>Nhập thông tin về thành viên nhóm dịch </h4>
+                    <h4>Nhập thông tin về vai trò </h4>
                     <div class="row">
                         <div class="col-lg-12">
-                            <form action="{{url('admin/nhom-dich/thanh-vien/insert')}}"method="post">
+                            <form action="{{url('admin/nhom-dich/vai-tro/insert')}}"method="post">
                                 <div class="form-group">
-                                    <label>Tên tài khoản thành viên:</label> <input class="form-control"
-                                name="ten_tai_khoan" id="ten_tai_khoan" placeholder="Nhập tên thành viên nhóm dịch truyện">
+                                    <label>Tên vai trò </label> <input class="form-control"
+                                name="ten_vai_tro" id="ten_vai_tro" placeholder="Nhập tên vai trò truyện">
                                 </div>
                                 <div class="form-group">
-                                    <label>Tên nhóm dịch:</label>
-                                    <input class="form-control"
-                                name="ten_nhom_dich" id="ten_nhom_dich" placeholder="Nhập tên tên nhóm dịch sẽ tham gia">
-                                <div class="mess"></div>
+                                    <label>Giới thiệu</label> 
+                                    <textarea name="gioi_thieu" id="gioiThieu" rows="8" cols="60"></textarea>
+                                    <script>CKEDITOR.replace('gioiThieu');</script>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
-                                    thành viên nhóm dịch</button>
+                                    vai trò</button>
                             </form>
                         </div>
                     </div>
@@ -187,34 +184,30 @@
             <div class="panel panel-green ">
 
                 <div class="panel-heading">
-                    <h4>Sửa thành viên nhóm dịch</h4>
+                    <h4>Sửa vai trò</h4>
                 </div>
                 <div class="panel-body">
-                    <h4>Nhập thông tin về thành viên nhóm dịch </h4>
+                    <h4>Nhập thông tin về vai trò </h4>
                     <div class="row">
                         <div class="col-lg-12">
                             <form
-                                 action="{{url('admin/nhom-dich/thanh-vien/edit')}}"
+                                 action="{{url('admin/nhom-dich/vai-tro/edit')}}"
                                 method="post">
                                
                                 <div class="form-group">
-                                    <label>ID thành viên nhóm dịch: </label> <input class="form-control"
+                                    <label>ID vai trò</label> <input class="form-control"
                                     id="id" name="id" value="" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Tên tài khoản thành viên: </label> <input class="form-control" readonly
-                                    name="ten_tai_khoan"  id="ten_tai_khoan" placeholder="Nhập tên thành viên nhóm dịch" >
+                                    <label>Tên vai trò</label> <input class="form-control"
+                                    name="ten_vai_tro"  id="ten_vai_tro" placeholder="Nhập tên vai trò">
                                 </div>
                                 <div class="form-group">
-                                    <label>Tên nhóm dịch: </label> <input class="form-control"
-                                    name="ten_nhom_dich"  id="ten_nhom_dich" placeholder="Nhập tên nhóm dịch" >
+                                    <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
+                                    <script>CKEDITOR.replace('gioiThieu2');</script>
                                 </div>
                                 <div class="form-group">
-                                    <label>Vai trò: </label> <input class="form-control" readonly   
-                                    name="ten_vai_tro"  id="ten_vai_tro" placeholder="Nhập Vai trò thành viên">
-                                </div>
-                                <div class="form-group">
-                                    <label>Trạng thái:</label>
+                                    <label>Trạng thái</label>
                                     <div class="form-group">
                                     <label class="radio-inline">
                                         <input type="radio" name="trang_thai" id="trangThai1" value="1" checked=""> Enable
@@ -225,7 +218,7 @@
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Sửa
-                                    thành viên nhóm dịch</button>
+                                    vai trò</button>
                             </form>
                         </div>
                     </div>
@@ -253,7 +246,7 @@
                 }
             });
             $.ajax({
-                url: "admin/nhom-dich/thanh-vien/ajax",
+                url: "admin/nhom-dich/vai-tro/ajax",
                 cache: false,
                 type: "Post",
                 dataType: "json",
@@ -262,16 +255,16 @@
                 },
                 success: function(data)
                 {
-                        $("#sua #id").val(data.id);
-                        $("#sua #ten_tai_khoan").val(data.ten_tai_khoan);
-                        $("#sua #ten_nhom_dich").val(data.ten_nhom_dich);
+                            $("#sua #id").val(data.id);
                         $("#sua #ten_vai_tro").val(data.ten_vai_tro);
+                        CKEDITOR.instances.gioiThieu2.setData(data.gioi_thieu);
                         if(data.trang_thai == 1)
                         {
                             $("#trangThai1").prop("checked",true);
                         }
                         else
                             $("#trangThai0").prop("checked",true);
+                
                 },
                 error: function(error)
                 {
@@ -285,7 +278,7 @@
             let id = $(this).attr('id');
             $.confirm({
             title: 'Cảnh báo!',
-            content: 'Xác nhận xóa thành viên nhóm dịch này?',
+            content: 'Xác nhận xóa vai trò này?',
             buttons: {
                         confirm: {
                         text: 'Xác nhận',
@@ -307,20 +300,20 @@
         });  
         // Var checkbox
         var array_checkbox = $("input[type=checkbox]"); // Mảng các control checkbox
-        var array_value_checkbox = new Array(); // Mảng các id của thành viên nhóm dịch
+        var array_value_checkbox = new Array(); // Mảng các id của vai trò
         var array_button = ['select-all']; // Mảng các control button
         // Xử lí sự kiện khi click vào 1 checkbox
         $(document).on('click','input[type=checkbox]',function(){
             let id = $(this).attr('id');   // Lấy id của tac giả được  check
             if(ClickCheckbox(this,array_checkbox,array_value_checkbox,array_button)) // Nếu checkbox được check
             {
-                array_value_checkbox.push(id); // Thêm id của thành viên nhóm dịch vào arrray
+                array_value_checkbox.push(id); // Thêm id của vai trò vào arrray
                 
             }
             else
             {
-                var index_checkbox_unchecked = array_value_checkbox.indexOf(id); // Tìm index của id thành viên nhóm dịch trong array
-                array_value_checkbox.splice(index_checkbox_unchecked,1); // Xóa id của thành viên nhóm dịch trong arrray theo index
+                var index_checkbox_unchecked = array_value_checkbox.indexOf(id); // Tìm index của id vai trò trong array
+                array_value_checkbox.splice(index_checkbox_unchecked,1); // Xóa id của vai trò trong arrray theo index
             } 
 
         });
@@ -398,11 +391,6 @@
             
             
         });
-        $("#themmoi #ten_tai_khoan").blur(()=>{
-            let html = '<div class="mess"><label class="text-danger" style="font-size:17px;">*</label>';
-            html += '<label style="font-size:13px;">Tài khoản này đã có trong nhóm khác</label></div>';
-            $("#themmoi .mess").replaceWith(html);
-        });
 
     });      
     ClickCheckbox = (e,array_checkbox,array_value_checkbox,array_button) =>{
@@ -435,8 +423,8 @@
             for(let i = 0; i < array_checkbox.length; i++) // Duyệt mảng các control checkbox
             {
                 array_checkbox[i].checked = false; // Gán về false (Gỡ check)
-                var index_checkbox_unchecked = array_value_checkbox.indexOf(array_checkbox[i].getAttribute("id")); // Tìm index của id thành viên nhóm dịch trong array 
-                array_value_checkbox.splice(index_checkbox_unchecked,1); // Xóa id của thành viên nhóm dịch trong arrray theo index
+                var index_checkbox_unchecked = array_value_checkbox.indexOf(array_checkbox[i].getAttribute("id")); // Tìm index của id vai trò trong array 
+                array_value_checkbox.splice(index_checkbox_unchecked,1); // Xóa id của vai trò trong arrray theo index
                 $("#btn-all").html('Chọn tất cả'); // Đổi tên hiển thị của button 
             }
             DisableButton(array_button);
@@ -445,7 +433,7 @@
         {
             for(let i = 0; i < array_checkbox.length; i++)// Duyệt mảng các control checkbox
             {
-                array_value_checkbox.push(array_checkbox[i].getAttribute("id")); // Thêm id của thành viên nhóm dịch vào arrray
+                array_value_checkbox.push(array_checkbox[i].getAttribute("id")); // Thêm id của vai trò vào arrray
                 
                 array_checkbox[i].checked = true;  // Gán về true (check)
             }
@@ -462,8 +450,7 @@
         for (let index = 0; index < array_button.length; index++) { // Duyệt mảng các button
             $("#"+array_button[index]).removeAttr('disabled'); // Disable button
         }
-    }  
-
+    }   
     // Hàm dùng để in mảng lên console
     ShowArray = (array) => {
         for (let index = 0; index < array.length; index++) {
