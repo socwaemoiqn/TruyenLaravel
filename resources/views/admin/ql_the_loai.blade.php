@@ -125,6 +125,7 @@
                                             <i class="fa  fa-edit"></i></a>
                                          <!-- <a id="{{$item->id}}" class="btn btn-danger btn-circle btn-xoa" title="Xóa thể loại" >
                                             <i class="fa fa-close"></i></a>      -->
+
                                     </td>
                                     </form>
                                    

@@ -116,6 +116,7 @@
                                             0
                                         @endif
                                     </td>
+
                                     <td>5</td>
                                     <td class="center">
                                         @if ($item->trang_thai == 1)
@@ -126,9 +127,12 @@
                                     </td>
                                     <td class="center">
                                      <form id="form{{$item->id}}" action="{{url('admin/nhom-dich/delete/'.$item->id)}}" method="post">
+<<<<<<< HEAD
                                      <a class="btn btn-danger btn-circle" title="Tất cả thành viên" >
                                             <i class="fa fa-list"></i>
                                         </a> 
+=======
+>>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
                                         <a class="btn btn-primary btn-circle" title="Tất cả truyện" >
                                             <i class="fa fa-list-ul"></i>
                                         </a> 
@@ -174,6 +178,15 @@
                                 name="ten_nhom_dich" id="ten_nhom_dich" placeholder="Nhập tên nhóm dịch truyện">
                                 </div>
                                 <div class="form-group">
+<<<<<<< HEAD
+=======
+                                    <label>Tên tài khoản nhóm trưởng</label>
+                                    <input class="form-control"
+                                name="ten_tai_khoan" id="ten_tai_khoan" placeholder="Nhập tên tài khoản nhóm trưởng">
+                                <div class="mess"></div>
+                                </div>
+                                <div class="form-group">
+>>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
                                     <label>Giới thiệu</label> 
                                     <textarea name="gioi_thieu" id="gioiThieu" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu');</script>
@@ -268,16 +281,26 @@
                 },
                 success: function(data)
                 {
+<<<<<<< HEAD
                         $("#sua #id").val(data.id);
+=======
+                            $("#sua #id").val(data.id);
+>>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
                         $("#sua #ten_nhom_dich").val(data.ten_nhom_dich);
                         CKEDITOR.instances.gioiThieu2.setData(data.gioi_thieu);
                         if(data.trang_thai == 1)
                         {
                             $("#trangThai1").prop("checked",true);
                         }
+<<<<<<< HEAD
                         else    
                             $("#trangThai0").prop("checked",true);
                     
+=======
+                        else
+                            $("#trangThai0").prop("checked",true);
+                
+>>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
                 },
                 error: function(error)
                 {

@@ -76,7 +76,11 @@
                                             <option value="">Tùy chọn</option>
                                             <option value="enable">Kích hoạt</option>
                                             <option value="disable">Vô hiệu</option>
+<<<<<<< HEAD
                                             <!-- <option value="delete">Xoá</option> -->
+=======
+                                            <option value="delete">Xoá</option>
+>>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
                                         </select>
                                 </form>
                                     

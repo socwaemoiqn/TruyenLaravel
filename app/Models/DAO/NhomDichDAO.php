@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 class NhomDichDAO implements NhomDichInterface{
     private static $limit = 5;
     private static $ten_nhom_dich = 'ten_nhom_dich';
-    private static $ten_tai_khoan = 'ten_tai_khoan';
     public static $url = 'admin/nhom-dich';
     public static function them(Request $request){
         $nhom_dich = new NhomDich;

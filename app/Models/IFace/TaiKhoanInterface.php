@@ -8,4 +8,5 @@ interface TaiKhoanInterface{
     public static function them(Request $request); // Thêm 1 record
     public static function getDataByUserName(Request $request);
     public static function getDataById(Request $request);
+
 }

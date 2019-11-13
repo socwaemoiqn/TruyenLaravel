@@ -31,8 +31,10 @@ class TheLoaiController extends BaseController
     public function xoa(Request $request)
     {  
         $the_loai = TheLoaiDAO::getDataById($request);
+
         $the_loai->delete();
         $request->session()->flash('mess', ['status'=>"Xóa thể loại thành công",'name'=>'thể loại vừa được xoá: '. $the_loai->ten_the_loai]);
+
         return redirect()->back();
        
     }

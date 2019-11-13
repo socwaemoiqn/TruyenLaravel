@@ -25,6 +25,7 @@ class NhomDichController extends BaseController
             ])->validate();
              $nhom_dich= NhomDichDAO::them($request);
              $request->session()->flash('mess', ['status'=>"Thêm nhóm dịch thành công",'name'=>'Nhóm dịch vừa được thêm: '.$nhom_dich->ten_nhom_dich]);
+
          return redirect()->back();
     }
     public function xoa(Request $request)

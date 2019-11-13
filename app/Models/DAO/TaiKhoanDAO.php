@@ -40,5 +40,6 @@ class TaiKhoanDAO implements TaiKhoanInterface{
     public static function getDataById(Request $request)
     {
         return TaiKhoan::find($request->id);
+
     }
 }
