@@ -160,7 +160,6 @@
                         <div class="col-lg-12">
                             <form action="{{url('admin/nhom-dich/thanh-vien/insert')}}"method="post">
                                 <div class="form-group">
-<<<<<<< HEAD
                                     <label>Tên tài khoản thành viên:</label> <input class="form-control"
                                 name="ten_tai_khoan" id="ten_tai_khoan" placeholder="Nhập tên thành viên nhóm dịch truyện">
                                 </div>
@@ -169,21 +168,7 @@
                                     <input class="form-control"
                                 name="ten_nhom_dich" id="ten_nhom_dich" placeholder="Nhập tên tên nhóm dịch sẽ tham gia">
                                 <div class="mess"></div>
-=======
-                                    <label>Tên thành viên nhóm dịch </label> <input class="form-control"
-                                name="ten_nhom_dich" id="ten_nhom_dich" placeholder="Nhập tên thành viên nhóm dịch truyện">
-                                </div>
-                                <div class="form-group">
-                                    <label>Tên tài khoản nhóm trưởng</label>
-                                    <input class="form-control"
-                                name="ten_tai_khoan" id="ten_tai_khoan" placeholder="Nhập tên tài khoản nhóm trưởng">
-                                <div class="mess"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Giới thiệu</label> 
-                                    <textarea name="gioi_thieu" id="gioiThieu" rows="8" cols="60"></textarea>
-                                    <script>CKEDITOR.replace('gioiThieu');</script>
->>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
+
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
                                     thành viên nhóm dịch</button>
@@ -215,7 +200,7 @@
                                 method="post">
                                
                                 <div class="form-group">
-<<<<<<< HEAD
+
                                     <label>ID thành viên nhóm dịch: </label> <input class="form-control"
                                     id="id" name="id" value="" readonly>
                                 </div>
@@ -230,18 +215,7 @@
                                 <div class="form-group">
                                     <label>Vai trò: </label> <input class="form-control" readonly   
                                     name="ten_vai_tro"  id="ten_vai_tro" placeholder="Nhập Vai trò thành viên">
-=======
-                                    <label>ID thành viên nhóm dịch</label> <input class="form-control"
-                                    id="id" name="id" value="" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label>Tên thành viên nhóm dịch</label> <input class="form-control"
-                                    name="ten_nhom_dich"  id="ten_nhom_dich" placeholder="Nhập tên thành viên nhóm dịch" >
-                                </div>
-                                <div class="form-group">
-                                    <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
-                                    <script>CKEDITOR.replace('gioiThieu2');</script>
->>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
+
                                 </div>
                                 <div class="form-group">
                                     <label>Trạng thái:</label>
@@ -292,26 +266,17 @@
                 },
                 success: function(data)
                 {
-<<<<<<< HEAD
                         $("#sua #id").val(data.id);
                         $("#sua #ten_tai_khoan").val(data.ten_tai_khoan);
                         $("#sua #ten_nhom_dich").val(data.ten_nhom_dich);
                         $("#sua #ten_vai_tro").val(data.ten_vai_tro);
-=======
-                            $("#sua #id").val(data.id);
-                        $("#sua #ten_nhom_dich").val(data.ten_nhom_dich);
-                        CKEDITOR.instances.gioiThieu2.setData(data.gioi_thieu);
->>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
                         if(data.trang_thai == 1)
                         {
                             $("#trangThai1").prop("checked",true);
                         }
                         else
                             $("#trangThai0").prop("checked",true);
-<<<<<<< HEAD
-=======
-                
->>>>>>> c07354b20d5c2dfafe650770d5096019e68e941b
+
                 },
                 error: function(error)
                 {

@@ -101,4 +101,27 @@ class NhomDichController extends BaseController
         }
         return redirect()->back();
     }
+    public function check(Request $request)
+    {
+        $ten_nhom_dich = 'ten_nhom_dich';
+        $validator = Validator::make($request->all(),[
+            $ten_nhom_dich => 'unique:tb_nhom_dich'
+        ],[
+            $ten_nhom_dich.".unique" => 'Nhóm dịch này đã tồn tại'
+        ]);
+        if($validator->fails())
+        {
+            return array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+            // return Response::json(array(
+            //     'success' => false,
+            //     'errors' => $validator->getMessageBag()->toArray()
+        
+            // ), 400); // 400 being the HTTP code for an invalid request. 
+        }
+        // return Response::json(array('success' => true), 200);
+        return array('success'=>true);
+    }
 }

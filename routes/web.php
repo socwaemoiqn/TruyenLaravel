@@ -61,6 +61,7 @@ Route::prefix('admin')->group(function () {
         Route::post("/edit",'Admin\NhomDichController@sua'); // ajax sửa dữ liệu
         Route::post("/delete/{id}",'Admin\NhomDichController@xoa'); // ajax xóa dữ liệu 
         Route::post("/select-all/{action}",'Admin\NhomDichController@selectAll'); // ajax xóa dữ liệu 
+        Route::post("/check",'Admin\NhomDichController@check'); // ajax check validator
 
         Route::prefix('thanh-vien')->group(function () {
             Route::get("/", 'Admin\NhomDichThanhVienController@thanhVienPage');

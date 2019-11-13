@@ -300,6 +300,7 @@
                         }
                     });
         });  
+        
         // Var checkbox
         var array_checkbox = $("input[type=checkbox]"); // Mảng các control checkbox
         var array_value_checkbox = new Array(); // Mảng các id của tác giả

@@ -21,7 +21,7 @@
 
 <link href="assets/admin/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
-	<script src="assets/admin/ckeditor/ckeditor.js"></script>
+	<script src="assets/admin/ckeditor_4.13.0_basic/ckeditor.js"></script> <!-- Đang ở phiên bản basic-->
 </head>
 <body>
 	<div id="wrapper">
