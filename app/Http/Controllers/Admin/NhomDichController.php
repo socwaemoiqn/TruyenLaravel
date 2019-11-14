@@ -105,9 +105,11 @@ class NhomDichController extends BaseController
     {
         $ten_nhom_dich = 'ten_nhom_dich';
         $validator = Validator::make($request->all(),[
-            $ten_nhom_dich => 'unique:tb_nhom_dich'
+            $ten_nhom_dich => 'bail|required|max:50|unique:tb_nhom_dich'
         ],[
-            $ten_nhom_dich.".unique" => 'Nhóm dịch này đã tồn tại'
+            $ten_nhom_dich.".unique" => 'Nhóm dịch này đã tồn tại',
+            $ten_nhom_dich.'.required'=> 'Tên nhóm dịch không được để trống',
+            $ten_nhom_dich.'.max' => 'Tên nhóm dịch có độ dài tối đa 50 ký tự'
         ]);
         if($validator->fails())
         {
@@ -115,13 +117,7 @@ class NhomDichController extends BaseController
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
             );
-            // return Response::json(array(
-            //     'success' => false,
-            //     'errors' => $validator->getMessageBag()->toArray()
-        
-            // ), 400); // 400 being the HTTP code for an invalid request. 
         }
-        // return Response::json(array('success' => true), 200);
         return array('success'=>true);
     }
 }
