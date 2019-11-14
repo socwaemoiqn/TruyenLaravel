@@ -174,7 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        // Socailite Service
+        Laravel\Socialite\SocialiteServiceProvider::class,
     ],
 
     /*
@@ -225,7 +226,9 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        // Socialite service    
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
     ],
-
+    //969730360057516
+    //369d47ba0fa201ff71cb899db25eded9
 ];

@@ -15,6 +15,7 @@
                 <span data-placeholder="Mật khẩu"></span>
             </div>
             <input type="submit" name="btnLogin"value="Đăng nhập">
+            <a href="redirect/facebook">Đăng nhập với facebook</a>
             <div class="bottom-text">
                Chưa có tài khoản? <a HREF="#" id="btn-logup">Đăng ký</a>
             </div>

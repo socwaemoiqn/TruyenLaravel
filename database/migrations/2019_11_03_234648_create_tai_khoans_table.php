@@ -17,6 +17,7 @@ class CreateTaiKhoansTable extends Migration
             $table->increments('id');
             $table->string('ten_tai_khoan');
             $table->string('mat_khau');
+            $table->string('email')->unique()->nullable();
             $table->integer('tai_khoan_vai_tro_id');
             $table->integer('trang_thai');
             $table->timestamps();

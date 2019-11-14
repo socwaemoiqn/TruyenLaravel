@@ -1,7 +1,6 @@
 <?php
 // Client
 Route::get('/','HomeController@indexPage'); // Trang chủ
-Route::get('/index','HomeController@indexPage'); // Trang chủ
 Route::get('/info','InfoController@infoPage'); // Trang thông tin truyện
 Route::get('/read','ReadController@readPage'); // Trang Đọc truyện
 Route::get('/danhmuc','DanhMucController@danhMucPage'); // Trang danh mục
@@ -10,6 +9,9 @@ Route::get('/search','SearchController@searchPage'); // Trang tìm kiếm
 Route::get('/contact','ContactController@contactPage'); // Trang thể loại
 Route::get('/term','TermController@termPage'); // Trang tìm kiếm
 // 
+// Socailite facebook
+Route::get('/redirect/{social}', 'SocialAuthController@redirect');
+Route::get('/callback/{social}', 'SocialAuthController@callback');
 // Member
 Route::prefix('team')->group(function () {
     Route::get("/", 'Translator\HomeController@indexPage');
@@ -90,3 +92,6 @@ Route::prefix('admin')->group(function () {
 //
 Route::post('/login','HomeController@login'); // Xử lý đăng ký
 Route::post('/logup','HomeController@logup'); // Xử lí đăng ký
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
