@@ -17,9 +17,6 @@ btnGoTop.onclick = function(){
         behavior: 'smooth',
     });
 };
-btnPhanHoi.onclick = function(){
-     content_PhanHoi = prompt("Vui lòng mô tả nội dung cần phản hồi:");
-};
 window.onload = function(){
     showBtnPhanHoi();
 };

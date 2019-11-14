@@ -219,7 +219,9 @@
                                 <div class="form-group">
                                     <label>Tên nhóm dịch</label> <input class="form-control"
                                     name="ten_nhom_dich"  id="ten_nhom_dich" placeholder="Nhập tên nhóm dịch" >
+                                    <span class="mess_ten_nhom_dich"></span>
                                 </div>
+                               
                                 <div class="form-group">
                                     <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu2');</script>
@@ -410,42 +412,11 @@
             
             
         });
-        $("#themmoi #ten_nhom_dich").blur(()=>{
-            $.ajaxSetup({
-                headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "admin/nhom-dich/check",
-                type: "post",
-                cache: false,
-                dataType: "json",
-                data: {
-                    ten_nhom_dich: $("#themmoi #ten_nhom_dich").val()
-                },
-                success: function(result)
-                {
-                    let html;
-                   if(result.success == false)
-                    {
-                            html = "";
-                            html += '<div class="mess_ten_nhom_dich"><label class="text-danger" style="font-size:17px;">*</label>';
-                            html += '<label style="font-size:13px;"> '+result.errors.ten_nhom_dich+' </label></div>';
-                  
-                    }
-                    else
-                    {
-                        html = "";
-                        html += '<div class="mess_ten_nhom_dich"><label class="text-danger" style="font-size:17px;">*</label>';
-                        html += '<label style="font-size:13px;"> Nhóm dịch hợp lệ</label></div>';
-                        
-                    }
-                    $("#themmoi .mess_ten_nhom_dich").replaceWith(html);
-                  
-                }
-            });
-            
+        $("#themmoi #ten_nhom_dich").blur(()=>{        
+            Validate('themmoi');
+        });
+        $("#sua #ten_nhom_dich").blur(()=>{        
+            Validate('sua');
         });
 
     });      
@@ -507,7 +478,41 @@
             $("#"+array_button[index]).removeAttr('disabled'); // Disable button
         }
     }  
-
+    Validate = (form) => {
+        $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "admin/nhom-dich/check",
+                type: "post",
+                cache: false,
+                dataType: "json",
+                data: {
+                    ten_nhom_dich: $("#"+form+" #ten_nhom_dich").val()
+                },
+                success: function(result)
+                {
+                    let html;
+                   if(result.success == false)
+                    {
+                            html = "";
+                            html += '<div class="mess_ten_nhom_dich"><i class="fa fa-close text-danger"></i>';
+                            html += ' <label style="font-size:13px;"> '+result.errors.ten_nhom_dich+' </label></div>';               
+                    }
+                    else
+                    {
+                        html = "";
+                        html += '<div class="mess_ten_nhom_dich"><i class="fa fa-check text-success"></i>';
+                        html += ' <label style="font-size:13px;"> Nhóm dịch hợp lệ</label></div>';
+                        
+                    }
+                    $("#"+form+" .mess_ten_nhom_dich").replaceWith(html);
+                  
+                }
+            });
+    }
     // Hàm dùng để in mảng lên console
     ShowArray = (array) => {
         for (let index = 0; index < array.length; index++) {

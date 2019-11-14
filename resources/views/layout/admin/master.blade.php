@@ -21,7 +21,7 @@
 
 <link href="assets/admin/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
-	<script src="assets/admin/ckeditor_4.13.0_basic/ckeditor.js"></script> <!-- Đang ở phiên bản basic-->
+<script src="assets/admin/ckeditorBasic/ckeditor.js"></script> <!-- Đang ở phiên bản basic-->
 </head>
 <body>
 	<div id="wrapper">
@@ -38,7 +38,6 @@
 	</div>
 	<!-- jQuery -->
 	
-	<script src="ckeditor/ckeditor.js"></script>
 	<!-- Bootstrap Core JavaScript -->
 	<script src="assets/admin/js/bootstrap.min.js"></script>
 

@@ -204,6 +204,6 @@
         </span>
         <i class="fas fa-tools"></i></span>
     <span class="tool-item"><span class="tool-mota">Liên hệ Facebook</span><a target="_blank" href="https://facebook.com"><i class="fab fa-facebook-f"></i></a></span>
-    <span class="tool-item"><span class="tool-mota">Phản hồi</span><a target="_blank" href="https://facebook.com"><i class="far fa-envelope"></i></a></span>
+    <span class="tool-item"><span class="tool-mota">Phản hồi</span><a target="_blank" href="{{url('contact')}}"><i class="far fa-envelope"></i></a></span>
 </div>
 @endsection
