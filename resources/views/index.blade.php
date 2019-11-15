@@ -2,6 +2,11 @@
 @section('title','Trang chủ')
 @section('main')
 <div class="main">
+
+@if(session('email'))
+    <script>location.href="{{url('/admin')}}"</script>
+@endif
+
         <div id="path">
             <i class="fa fa-home"></i> Đọc truyện online, đọc truyện chữ, truyện full, truyện hay. Tổng hợp đầy đủ và cập nhật liên tục.</span>
         </div>
@@ -210,4 +215,5 @@
 @endsection
 @section('js')
     <script src="assets/js/index.js"></script>
+
 @endsection

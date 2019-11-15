@@ -8,6 +8,7 @@ use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 class TaiKhoan extends Model implements Authenticatable
 {
     use AuthenticableTrait;
+    protected $fillable = ['email'];
     protected $table = "tb_tai_khoan";
     public $timestamps = true;
 }

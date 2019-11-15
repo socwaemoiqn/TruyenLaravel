@@ -29,10 +29,7 @@ class SocialAccountService
                     'email' => $email,
                     'ten_tai_khoan' => $providerUser->getName(),
                     'mat_khau' => $providerUser->getName(),
-                    'trang_thai' => 1,
-                    'tai_khoan_vai_tro_id' => 3
                 ]);
-                $user->save();
             }
 
             $account->user()->associate($user);

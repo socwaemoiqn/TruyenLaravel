@@ -2,6 +2,7 @@
   <script>alert("{{ session('mess') }}");</script>
   {{Session::flush()}}
   @endif  
+  <div id="fb-root"></div>
 <div id="container-login">
         <i class="fas fa-times-circle fa-lg"></i>
 <form action="{{ url('login')}}" method="post" autocomplete="off">
@@ -16,6 +17,7 @@
             </div>
             <input type="submit" name="btnLogin"value="Đăng nhập">
             <a href="redirect/facebook">Đăng nhập với facebook</a>
+      
             <div class="bottom-text">
                Chưa có tài khoản? <a HREF="#" id="btn-logup">Đăng ký</a>
             </div>

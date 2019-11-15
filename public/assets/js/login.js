@@ -9,11 +9,14 @@ var exit_logup = document.querySelector("#container-logup i");
 var cover_login = document.querySelector("div.cover-login");
 // Nút quay lại form đăng ký
 btn_login.onclick = function(){
+    Login();
+};
+Login = () => {
     container_login.classList.add("show-login");
     container_login.classList.remove("hide-login");
     container_logup.classList.add("hide-login");
     container_logup.classList.remove("show-login");
-};
+}
 // Nút đăng ký form đăng nhập
 btn_logup.onclick = function(){
     container_logup.classList.add("show-login");
@@ -39,10 +42,13 @@ for(var i = 0; i < input.length; i++)
     input[i].setAttribute("onblur","RemoveClassFocus(this)");
 }
 user.onclick = function(){
+    UserLogin();
+};
+UserLogin = () =>{
     container_login.classList.add("show-login");
     container_login.classList.remove("hide-login");
     cover_login.classList.add("cover-login-show");
-};
+}
 function AddClassFocus(e)
 {
     e.classList.add("focus");
@@ -52,3 +58,6 @@ function RemoveClassFocus(e)
     if(e.value == "")
     e.classList.remove("focus");
 }
+
+
+ 

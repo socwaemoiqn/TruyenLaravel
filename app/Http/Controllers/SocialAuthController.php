@@ -15,11 +15,11 @@ class SocialAuthController extends Controller
         return Socialite::driver($social)->redirect();
     }
 
-    public function callback($social)
+    public function callback($social,Request $request)
     {
         $user = SocialAccountService::createOrGetUser(Socialite::driver($social)->user(), $social);
         auth()->login($user);
-
-        return redirect()->to('/')->with('user',$user);
+        // session(['email',$user->email]);
+        return redirect()->to('/');
     }
 }
