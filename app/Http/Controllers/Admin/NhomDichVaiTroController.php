@@ -16,8 +16,9 @@ class NhomDichVaiTroController extends BaseController
         $ten_vai_tro = 'ten_vai_tro';
         $validator = Validator::make($request->all(),
         [
-            $ten_vai_tro => 'required|max:50'
+            $ten_vai_tro => 'unique:tb_nhom_dich_vai_tro|required|max:50'
         ],[
+            $ten_vai_tro.".unique" => 'Vai trò này đã tồn tại',
             $ten_vai_tro.'.required'=> 'Tên vai trò không được để trống',
             $ten_vai_tro.'.max' => 'Độ dài tối đa 50 ký tự'
         ])->validate();
@@ -97,5 +98,24 @@ class NhomDichVaiTroController extends BaseController
                 break;
         }
         return redirect()->back();
+    }
+    public function check(Request $request)
+    {
+        $ten_vai_tro = 'ten_vai_tro';
+        $validator = Validator::make($request->all(),[
+            $ten_vai_tro => 'bail|required|max:50|unique:tb_nhom_dich_vai_tro'
+        ],[
+            $ten_vai_tro.".unique" => 'Vai trò này đã tồn tại',
+            $ten_vai_tro.'.required'=> 'Tên vai trò không được để trống',
+            $ten_vai_tro.'.max' => 'Tên Vai trò có độ dài tối đa 50 ký tự'
+        ]);
+        if($validator->fails())
+        {
+            return array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+        }
+        return array('success'=>true);
     }
 }

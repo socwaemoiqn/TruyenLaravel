@@ -162,13 +162,13 @@
                                 <div class="form-group">
                                     <label>Tên tài khoản thành viên:</label> <input class="form-control"
                                 name="ten_tai_khoan" id="ten_tai_khoan" placeholder="Nhập tên thành viên nhóm dịch truyện">
+                                <span class="mess_ten_tai_khoan"></span>
                                 </div>
                                 <div class="form-group">
                                     <label>Tên nhóm dịch:</label>
                                     <input class="form-control"
                                 name="ten_nhom_dich" id="ten_nhom_dich" placeholder="Nhập tên tên nhóm dịch sẽ tham gia">
-                                <div class="mess"></div>
-
+                                <span class="mess_ten_nhom_dich"></span>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Thêm
                                     thành viên nhóm dịch</button>
@@ -211,6 +211,7 @@
                                 <div class="form-group">
                                     <label>Tên nhóm dịch: </label> <input class="form-control"
                                     name="ten_nhom_dich"  id="ten_nhom_dich" placeholder="Nhập tên nhóm dịch" >
+                                    <span class="mess_ten_nhom_dich"></span>
                                 </div>
                                 <div class="form-group">
                                     <label>Vai trò: </label> <input class="form-control" readonly   
@@ -404,11 +405,14 @@
             
         });
         $("#themmoi #ten_tai_khoan").blur(()=>{
-            let html = '<div class="mess"><label class="text-danger" style="font-size:17px;">*</label>';
-            html += '<label style="font-size:13px;">Tài khoản này đã có trong nhóm khác</label></div>';
-            $("#themmoi .mess").replaceWith(html);
+            Validate("themmoi",'ten_tai_khoan');
         });
-
+        $("#themmoi #ten_nhom_dich").blur(()=>{
+            Validate("themmoi",'ten_nhom_dich');
+        });
+        $("#sua #ten_nhom_dich").blur(()=>{
+            Validate("sua",'ten_nhom_dich');
+        });
     });      
     ClickCheckbox = (e,array_checkbox,array_value_checkbox,array_button) =>{
         if(e.checked) // Nếu checkbox được checked
@@ -468,7 +472,44 @@
             $("#"+array_button[index]).removeAttr('disabled'); // Disable button
         }
     }  
-
+    Validate = (form,input) => {
+        $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "admin/nhom-dich/thanh-vien/check",
+                type: "post",
+                cache: false,
+                dataType: "json",
+                data: {
+                    inputType: input,
+                    inputVal: $("#"+form+" #"+input).val()
+                },
+                success: function(result)
+                {
+                    let html;
+                    let error_mess;
+                   if(result.success == false)
+                    {
+                            error_mess = input == 'ten_tai_khoan'? result.errors.ten_tai_khoan : result.errors.ten_nhom_dich;
+                            if('tai_khoan_id' in result.errors) error_mess = result.errors.tai_khoan_id;
+                             html = "";
+                            html += '<div class="mess_'+input+'"><i class="fa fa-close text-danger"></i>';
+                            html += ' <label style="font-size:13px;">'+error_mess+'</label></div>';  
+                    }
+                    else
+                    {
+                        error_mess = input == 'ten_tai_khoan'? 'Tên tài khoản hợp lệ' : 'Tên nhóm dịch hợp lệ';
+                        html = "";
+                        html += '<div class="mess_'+input+'"><i class="fa fa-check text-success"></i>';
+                        html += ' <label style="font-size:13px;"> '+error_mess+'</label></div>';
+                    }
+                    $("#"+form+" .mess_"+input).replaceWith(html);
+                }
+            });
+    }
     // Hàm dùng để in mảng lên console
     ShowArray = (array) => {
         for (let index = 0; index < array.length; index++) {

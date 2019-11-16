@@ -11,7 +11,7 @@ class HomeController extends BaseController
             $this->middleware('auth');
         }
     public function indexPage(Request $request){
-        $request->session()->forget('email');
+       
         return view('admin.index');
     }
 }

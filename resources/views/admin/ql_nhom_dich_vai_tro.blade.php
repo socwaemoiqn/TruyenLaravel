@@ -159,6 +159,7 @@
                                 <div class="form-group">
                                     <label>Tên vai trò </label> <input class="form-control"
                                 name="ten_vai_tro" id="ten_vai_tro" placeholder="Nhập tên vai trò truyện">
+                                <span class="mess_ten_vai_tro"></span>
                                 </div>
                                 <div class="form-group">
                                     <label>Giới thiệu</label> 
@@ -201,7 +202,8 @@
                                 <div class="form-group">
                                     <label>Tên vai trò</label> <input class="form-control"
                                     name="ten_vai_tro"  id="ten_vai_tro" placeholder="Nhập tên vai trò">
-                                </div>
+                                    <span class="mess_ten_vai_tro"></span>
+                               </div>
                                 <div class="form-group">
                                     <label>Giới thiệu</label>  <textarea name="gioi_thieu" id="gioiThieu2" rows="8" cols="60"></textarea>
                                     <script>CKEDITOR.replace('gioiThieu2');</script>
@@ -391,7 +393,12 @@
             
             
         });
-
+        $("#themmoi #ten_vai_tro").blur(()=>{
+            Validate('themmoi')
+        }); 
+        $("#sua #ten_vai_tro").blur(()=>{
+            Validate('sua');
+        }); 
     });      
     ClickCheckbox = (e,array_checkbox,array_value_checkbox,array_button) =>{
         if(e.checked) // Nếu checkbox được checked
@@ -451,6 +458,41 @@
             $("#"+array_button[index]).removeAttr('disabled'); // Disable button
         }
     }   
+    Validate = (form) => {
+        $.ajaxSetup({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "admin/nhom-dich/vai-tro/check",
+                type: "post",
+                cache: false,
+                dataType: "json",
+                data: {
+                    ten_vai_tro: $("#"+form+" #ten_vai_tro").val()
+                },
+                success: function(result)
+                {
+                    let html;
+                   if(result.success == false)
+                    {
+                            html = "";
+                            html += '<div class="mess_ten_vai_tro"><i class="fa fa-close text-danger"></i>';
+                            html += ' <label style="font-size:13px;"> '+result.errors.ten_vai_tro+' </label></div>';               
+                    }
+                    else
+                    {
+                        html = "";
+                        html += '<div class="mess_ten_vai_tro"><i class="fa fa-check text-success"></i>';
+                        html += ' <label style="font-size:13px;"> Tên vai trò hợp lệ</label></div>';
+                        
+                    }
+                    $("#"+form+" .mess_ten_vai_tro").replaceWith(html);
+                  
+                }
+            });
+    }
     // Hàm dùng để in mảng lên console
     ShowArray = (array) => {
         for (let index = 0; index < array.length; index++) {

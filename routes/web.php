@@ -73,6 +73,7 @@ Route::prefix('admin')->group(function () {
             Route::post("/edit",'Admin\NhomDichThanhVienController@sua'); // ajax sửa dữ liệu 
             Route::post("/delete/{id}",'Admin\NhomDichThanhVienController@xoa'); // ajax xóa dữ liệu 
             Route::post("/select-all/{action}",'Admin\NhomDichThanhVienController@selectAll'); // ajax xóa dữ liệu 
+            Route::post("/check",'Admin\NhomDichThanhVienController@check'); // ajax check validator
         });
         Route::prefix('vai-tro')->group(function () {
             Route::get("/", 'Admin\NhomDichVaiTroController@nhomDichVaiTroPage');
@@ -82,6 +83,7 @@ Route::prefix('admin')->group(function () {
             Route::post("/edit",'Admin\NhomDichVaiTroController@sua'); // ajax sửa dữ liệu 
             Route::post("/delete/{id}",'Admin\NhomDichVaiTroController@xoa'); // ajax xóa dữ liệu 
             Route::post("/select-all/{action}",'Admin\NhomDichVaiTroController@selectAll'); // ajax xóa dữ liệu 
+            Route::post("/check",'Admin\NhomDichVaiTroController@check'); // ajax check validator
         });
     });
     
@@ -93,5 +95,3 @@ Route::prefix('admin')->group(function () {
 Route::post('/login','HomeController@login'); // Xử lý đăng ký
 Route::post('/logup','HomeController@logup'); // Xử lí đăng ký
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

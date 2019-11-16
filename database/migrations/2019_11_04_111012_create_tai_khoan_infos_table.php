@@ -13,12 +13,11 @@ class CreateTaiKhoanInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tai_khoan_info', function (Blueprint $table) {
+        Schema::create('tb_tai_khoan_info', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('tai_khoan_id');
-            $table->string('ho_ten',50)->nullable();
-            $table->string('email',100)->nullable();
-            $table->string('sdt',50)->nullable();
+            $table->string('ho_ten',50);
+            $table->string('sdt',50);
             $table->timestamps();
         });
     }

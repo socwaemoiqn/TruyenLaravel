@@ -21,14 +21,16 @@ class SocialAccountService
                 'provider_user_id' => $providerUser->getId(),
                 'provider' => $social
             ]);
-            $user = TaiKhoan::where('email',$email)->first();
+            $user = TaiKhoan::where('email',$email)
+            ->orWhere('ten_tai_khoan',$providerUser->id)
+            ->first();
 
             if (!$user) {
 
                 $user = TaiKhoan::create([
                     'email' => $email,
-                    'ten_tai_khoan' => $providerUser->getName(),
-                    'mat_khau' => $providerUser->getName(),
+                    'ten_tai_khoan' => $providerUser->getId(),
+                    'mat_khau' => $providerUser->token,
                 ]);
             }
 

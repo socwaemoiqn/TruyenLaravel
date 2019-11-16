@@ -117,4 +117,42 @@ class NhomDichThanhVienController extends BaseController
         }
         return redirect()->back();
     }
+    public function check(Request $request)
+    {
+        $inputType = $request->inputType;
+        $inputVal = $request->inputVal;
+        $request->request->set($inputType,$inputVal);
+        if($inputType == 'ten_tai_khoan')
+        {
+            $tai_khoan = TaiKhoanDAO::getDataByUserName($request);
+            if($tai_khoan) $request->request->set('tai_khoan_id',$tai_khoan->id);
+            $validator = Validator::make($request->all(),[
+                $inputType => 'bail|required|max:50|exists:tb_tai_khoan',
+                'tai_khoan_id' => 'bail|unique:tb_nhom_dich_thanh_vien',   
+            ],[
+                $inputType.'.required'=> 'Tên tài khoản thành viên không được để trống',
+                $inputType.'.max' => 'Tên tài khoản thành viên độ dài tối đa 50 ký tự',
+                $inputType.'.exists' => 'Tài khoản thành viên không tồn tại',
+                'tai_khoan_id'.'.unique' => 'Tài khoản này đã ở nhóm khác',
+            ]);
+        }
+        else if($inputType == 'ten_nhom_dich')
+        {
+            $validator = Validator::make($request->all(),[
+                $inputType => 'bail|required|max:50|exists:tb_nhom_dich'    
+            ],[
+                $inputType.'.exists'=> 'Nhóm dịch này không tồn tại',
+                $inputType.'.required'=> 'Tên nhóm dịch không được để trống',
+                $inputType.'.max' => 'Tên nhóm dịch có độ dài tối đa 50 ký tự'
+            ]);
+        }
+        if($validator->fails())
+        {
+            return array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+            );
+        }
+        return array('success'=>true);
+    }
 }
