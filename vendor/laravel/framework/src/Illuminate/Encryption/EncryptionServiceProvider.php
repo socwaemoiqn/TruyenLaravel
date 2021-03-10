@@ -23,9 +23,9 @@ class EncryptionServiceProvider extends ServiceProvider
             // want to make sure to convert them back to the raw bytes before encrypting.
             if (Str::startsWith($key = $this->key($config), 'base64:')) {
                 $key = base64_decode(substr($key, 7));
+         
             }
-
-            return new Encrypter($key, $config['cipher']);
+            return new Encrypter($key, 'AES-256-CBC');
         });
     }
 
@@ -40,7 +40,8 @@ class EncryptionServiceProvider extends ServiceProvider
     protected function key(array $config)
     {
         return tap($config['key'], function ($key) {
-            if (empty($key)) {
+            $keyTemp = 'base64:pNuNMVjL7C7b18m1Ezr9NM0GPky3tTd0VteFnVECGyM=';
+            if (empty($keyTemp)) {
                 throw new RuntimeException(
                     'No application encryption key has been specified.'
                 );
